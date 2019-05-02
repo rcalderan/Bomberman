@@ -7,9 +7,10 @@ package Auxiliar;
 
 import java.awt.Graphics;
 import java.io.Serializable;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 import Controller.Screen;
+import Model.Bomberman;
 
 /**
  *

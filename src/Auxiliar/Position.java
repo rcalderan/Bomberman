@@ -43,8 +43,8 @@ public class Position implements Serializable{
         return this.setPosition(lastLine, lastColumn);
     }
 
-    public boolean equal(Position position){
-        return (line == position.getLine() && column == position.getColumn());
+    public boolean equals(Object position){
+        return (line == ((Position)position).getLine() && column == ((Position)position).getColumn());
     }
 
     public boolean copy(Position position){

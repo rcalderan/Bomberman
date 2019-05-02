@@ -29,6 +29,10 @@ public abstract class Element implements Serializable {
     public boolean isbKill() {
         return bKill;
     }
+
+    public boolean isbMortal() {
+        return bMortal;
+    }
  
     protected Element(String sNomeImagePNG) {
         this.pPosition = new Position(1, 1);

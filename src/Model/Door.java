@@ -9,11 +9,10 @@ package Model;
  *
  * @author ICMC
  */
-public class ParedeDura extends Element {
-    
-    public ParedeDura(String sNomeImagePNG) {
-        super(sNomeImagePNG);
-        this.bTransposable = false;
+public class Door extends Element {
+
+    public Door(String sImageNamePNG) {
+        super(sImageNamePNG);
     }
     
 }

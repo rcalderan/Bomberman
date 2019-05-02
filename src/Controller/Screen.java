@@ -12,10 +12,13 @@ package Controller;
 
 import Model.*;
 import Auxiliar.*;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import java.util.Timer;
 import java.util.logging.*;
 import java.util.zip.*;
 /**
@@ -48,9 +51,41 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
 
         /*Cria eElements adiciona elementos*/
         bBomberman = new Bomberman("bomberman.png");
-        bBomberman.setPosition(0, 7);
+        bBomberman.setPosition(0, 0);
         this.addElement(bBomberman);
 
+        // set indestrutible wall
+        for(int i=0;i<Consts.RES;i++){
+            if(i%2!=0)
+                for (int j=0;j<Consts.RES;j++){
+                    if(j%2!=0) {
+                        Wall wall = new Wall("wall.png");
+                        wall.setPosition(i, j);
+                        this.addElement(wall);
+                    }
+            }
+        }
+
+        Brick brk1 = new Brick("brick.png");
+        brk1.setPosition(2, 2);
+        this.addElement(brk1);
+
+        Brick brk2 = new Brick("brick.png");
+        brk2.setPosition(2, 4);
+        this.addElement(brk2);
+
+        Brick brk3 = new Brick("brick.png");
+        brk3.setPosition(2, 6);
+        this.addElement(brk3);
+
+        Brick brk4 = new Brick("brick.png");
+        brk4.setPosition(2, 8);
+        this.addElement(brk4);
+
+        Brick brk5 = new Brick("brick.png");
+        brk5.setPosition(2, 10);
+        this.addElement(brk5);
+/*
         BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("bichinho.png");
         bBichinhoH.setPosition(3, 3);
         this.addElement(bBichinhoH);
@@ -67,7 +102,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         rb.setPosition(1, 1);
         this.addElement(rb);
         
-        ParedeDura t1 = new ParedeDura("parede.png");
+        Wall t1 = new Wall("parede.png");
         t1.setPosition(4, 4);
         BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("bichinho.png");
         bBichinhoH2.setPosition(6, 6);
@@ -76,29 +111,36 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         BichinhoVaiVemHorizontal bBichinhoH3 = new BichinhoVaiVemHorizontal("bichinho.png");
         bBichinhoH3.setPosition(2,9);
         this.addElement(t1);
-        
-        ParedeDura t2 = new ParedeDura("parede.png");
+
+        Wall t2 = new Wall("parede.png");
         t2.setPosition(4, 5);
         this.addElement(t2);
 
-        ParedeDura t3 = new ParedeDura("parede.png");
+        Wall t3 = new Wall("parede.png");
         t3.setPosition(4, 6);
         this.addElement(t3);
 
-        ParedeDura t4 = new ParedeDura("parede.png");
+        Wall t4 = new Wall("parede.png");
         t4.setPosition(0, 6);
         this.addElement(t4);
 
-        ParedeDura t5 = new ParedeDura("parede.png");
+        Wall t5 = new Wall("parede.png");
         t5.setPosition(1, 6);
         this.addElement(t5);
 
-        ParedeDura t6 = new ParedeDura("parede.png");
+        Wall t6 = new Wall("parede.png");
         t6.setPosition(1, 7);
         this.addElement(t6);
-        
+        */
     }
 
+    /**
+     * Get player instance
+     * @return Bomberman
+     */
+    public Bomberman getBomberman(){
+        return bBomberman;
+    }
     /**
      * get a game element in position
      * @param pos position
@@ -107,7 +149,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
     public ArrayList<Element> getElements(Position pos){
         ArrayList<Element> all =new ArrayList<>();
         for(Element el : eElements){
-            if(el.getPosition().equal(pos))
+            if(el.getPosition().equals(pos))
                 all.add(el);
         }
         return all;
