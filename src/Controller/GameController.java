@@ -21,6 +21,12 @@ public class GameController {
     public void drawEverything(ArrayList<Element> e){
         for(int i = 0; i < e.size(); i++){
             e.get(i).autoDraw();
+            if(e.get(i) instanceof Bomb){
+                Bomb b = (Bomb) e.get(i);
+                if(b.getiCountTime()>Consts.TIMER_BOMB){
+                    explode(b);
+                }
+            }
         }
     }
     public void processEverything(ArrayList<Element> e){

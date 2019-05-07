@@ -301,7 +301,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             bBomberman.moveRight();
         }else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             if(couldPlaceBomb()){
-                Bomb b = new Bomb("bomba.png");
+                Bomb b = new Bomb("bomba.png",getBomberman().getPower());
                 b.setPosition(bBomberman.getPosition());
                 this.addElement(b);
             }
