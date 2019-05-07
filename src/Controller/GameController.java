@@ -6,10 +6,12 @@
 
 package Controller;
 
+import Auxiliar.Consts;
 import Model.*;
 import Auxiliar.Position;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -26,6 +28,7 @@ public class GameController {
         Element eTemp;
         for(int i = 1; i < e.size(); i++){
             eTemp = e.get(i);
+
             if(eTemp.isbKill()){
                 e.remove(eTemp);
                 continue;
@@ -45,11 +48,11 @@ public class GameController {
                 }else{
                     if(eTemp.isbTransposable()){
                         if(eTemp instanceof LifeUp){
-                            bBomberman.setLives(bBomberman.getLives() + 1);
+                            //bBomberman.setLives(bBomberman.getLives() + 1);
                             e.remove(eTemp);
                         }
                         if(eTemp instanceof PowerUp){
-                            bBomberman.powerUp();
+                            //bBomberman.powerUp();
                             e.remove(eTemp);
                         }
                         if(eTemp instanceof Door){
@@ -74,13 +77,15 @@ public class GameController {
                 //Se o objeto é um monstro ou uma parede de tijolos e está na mesma posíção da bomba ele some.
                 Element eTemp2 = e.get(j);
                 if(eTemp.getPosition().equals(eTemp2.getPosition())){
-                    if( (eTemp instanceof Monster || eTemp instanceof Brick ) && eTemp2 instanceof Bomb){
+                    if( (eTemp instanceof Monster || eTemp instanceof Brick ) && (eTemp2 instanceof Bomb || eTemp2 instanceof BombFire)){
+
                         e.remove(eTemp);
                     }
                 }
             }
-        }       
+        }
     }
+    
     public boolean isValidPosition(ArrayList<Element> e, Position p){
         Element eTemp;
         for(int i = 1; i < e.size(); i++){
@@ -92,5 +97,12 @@ public class GameController {
         return true;
     }
 
+    public void explode(Bomb bomb){
+        if(bomb.getiCountTime()>= Consts.TIMER_BOMB){
+            for(int i=1;i<bomb.getPower();i++){
+
+            }
+        }
+    }
 
 }

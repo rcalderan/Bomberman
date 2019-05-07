@@ -2,9 +2,9 @@ package Model;
 
 import Auxiliar.Consts;
 
-public class StaticFire extends Element{
+public class BombFire extends Element{
     private int iCountTempo;
-    protected StaticFire(String sNomeImagePNG) {
+    protected BombFire(String sNomeImagePNG) {
         super(sNomeImagePNG);
         bMortal=true;
         iCountTempo=0;

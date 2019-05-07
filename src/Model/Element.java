@@ -12,6 +12,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -94,5 +96,19 @@ public abstract class Element implements Serializable {
     }
     public boolean interacts(Element aElement){
         return false;
+    }
+
+    public void changeAppearance(String sNewAppearance){
+        try {
+            iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNewAppearance);
+            Image img = iImage.getImage();
+            BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
+
+            Graphics g = bi.createGraphics();
+            g.drawImage(img, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+            iImage = new ImageIcon(bi);
+        } catch (IOException ex) {
+            Logger.getLogger(Bomb.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

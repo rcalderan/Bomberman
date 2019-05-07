@@ -21,12 +21,13 @@ public class Bomberman extends Element implements Serializable{
 
     private int lives;
     private int power;
-    private int coolDown;
+    private int bombs;
 
     public Bomberman(String sImageNamePNG) {
         super(sImageNamePNG);
         lives=2;
         power=1;
+        bombs=1;
     }
 
     public void powerUp(){
@@ -45,6 +46,12 @@ public class Bomberman extends Element implements Serializable{
         this.lives = lives;
     }
 
+    public void setBombs(){
+        this.bombs = this.bombs + 1;
+    }
+    public int getBombs(){
+        return this.bombs;
+    }
 
 
 
@@ -60,11 +67,14 @@ public class Bomberman extends Element implements Serializable{
                     if (getLives() == 0) {
                         //game over...
                     }
-                }
+                }else
                 if(el instanceof PowerUp){
                     powerUp();
 
-                }
+                }else
+                if(el instanceof LifeUp){
+                    setLives(getLives()+1);
+                }else
                 if(el instanceof LifeUp){
                     setLives(getLives()+1);
                 }

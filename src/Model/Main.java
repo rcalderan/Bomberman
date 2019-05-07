@@ -19,6 +19,7 @@ public class Main {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Screen tScreen = new Screen();
+
                 tScreen.setVisible(true);
                 tScreen.createBufferStrategy(2);
                 tScreen.go();

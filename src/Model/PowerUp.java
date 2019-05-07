@@ -25,7 +25,7 @@ public class PowerUp extends Element {
 
         if(posElements.size()>1){
             for(Element el : posElements){
-                if(el instanceof StaticFire){//break this brick
+                if(el instanceof BombFire){//break this brick
                     Draw.getGameScreen().removeElement(this);
                 }
             }

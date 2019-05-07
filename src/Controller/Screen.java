@@ -16,6 +16,7 @@ import Auxiliar.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.Timer;
@@ -45,7 +46,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         this.addKeyListener(this);   /*teclado*/
         /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
         this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
-                Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
+                Consts.CELL_SIDE+Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
 
         eElements = new ArrayList<Element>(100);
 
@@ -53,6 +54,8 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         bBomberman = new Bomberman("bomberman.png");
         bBomberman.setPosition(0, 0);
         this.addElement(bBomberman);
+
+
 
         // set indestrutible wall
         for(int i=0;i<Consts.RES;i++){
@@ -63,6 +66,15 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
                         wall.setPosition(i, j);
                         this.addElement(wall);
                     }
+            }
+        }
+        for(int i=3;i<Consts.RES;i++){
+            for (int j=0;j<Consts.RES;j++){
+                if(j%2==0) {
+                    Brick br = new Brick("brick.png");
+                    br.setPosition(i, j);
+                    this.addElement(br);
+                }
             }
         }
 
@@ -154,6 +166,20 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }
         return all;
     }
+
+    public boolean couldPlaceBomb(){
+        int bombCount=0;
+        for(Element el : eElements){
+            if(el instanceof Bomb)
+            {
+                bombCount++;
+                if(bombCount>bBomberman.getBombs())
+                    return false;
+            }
+        }
+        return true;
+    }
+
 /*--------------------------------------------------*/
 /*------Não se preocupe com o código a seguir-------*/
 /*--------------------------------------------------*/
@@ -181,9 +207,10 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         Graphics g = this.getBufferStrategy().getDrawGraphics();
         /*Criamos um contexto gráfico*/
         graphics = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
+
         /*Desenha cenário*/
         for (int i = 0; i < Consts.RES; i++) {
-            for (int j = 0; j < Consts.RES; j++) {
+            for (int j = 0; j <= Consts.RES; j++) {
                 try {
                     Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "green.png");
                     graphics.drawImage(newImage,
@@ -198,7 +225,28 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             this.gameController.drawEverything(eElements);
             this.gameController.processEverything(eElements);
         }
+        //create game hud
+        try{
+            BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
 
+            Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "lifeUp.png");
+
+            Graphics g2 = bi.createGraphics();
+
+
+            graphics.drawImage(newImage,0,  Consts.CELL_SIDE*11, null);
+
+            /*Image img = iImage.getImage();
+            BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
+
+            Graphics g = bi.createGraphics();
+            g.drawImage(img, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+            iImage = new ImageIcon(bi);*/
+
+
+        }catch (IOException er){
+            System.out.println(er.getMessage());
+        }
         g.dispose();
         graphics.dispose();
         if (!getBufferStrategy().contentsLost()) {
@@ -252,10 +300,11 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             bBomberman.moveRight();
         }else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            //bBomberman.soltaUmaBomba();
-            Bomb b = new Bomb("bomba.png");
-            b.setPosition(bBomberman.getPosition());
-            this.addElement(b);
+            if(couldPlaceBomb()){
+                Bomb b = new Bomb("bomba.png");
+                b.setPosition(bBomberman.getPosition());
+                this.addElement(b);
+            }
         }
         if (!this.isValidPosition(bBomberman.getPosition())) {
             bBomberman.backToLastPosition();
