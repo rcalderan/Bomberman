@@ -4,7 +4,7 @@ import Auxiliar.Consts;
 
 public class BombFire extends Element{
     private int iCountTempo;
-    protected BombFire(String sNomeImagePNG) {
+    public BombFire(String sNomeImagePNG) {
         super(sNomeImagePNG);
         bMortal=true;
         iCountTempo=0;
