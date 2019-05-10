@@ -166,30 +166,47 @@ public class GameController {
     public void explode(Bomb bomb){
         if(bomb.getCountDown()>= Consts.TIMER_BOMB){
             boolean[] foundLimit = new boolean[]{true,true,true,true};
-            BombFire f = new BombFire("explosao.png");
+            BombFire f = new BombFire("explosion.png");
             f.setPosition(bomb.getPosition());
             Draw.getGameScreen().addElement(f);
             for(int i=1;i<=bomb.getPower();i++){
+                String expName;
 
-                BombFire fb = new BombFire("explosao.png");
+                if(i==bomb.getPower())
+                    expName="explosion-L.png";
+                else
+                    expName = "explosion-horizontal";
+                BombFire fb = new BombFire(expName);
                 if(foundLimit[0] && fb.setPosition(bomb.getPosition().getLine(), bomb.getPosition().getColumn()-i)){
                     foundLimit[0] = Draw.getGameScreen().isValidPosition(fb.getPosition());
                     Draw.getGameScreen().addElement(fb);
                 }
 
-                BombFire fb2 = new BombFire("explosao.png");
+                if(i==bomb.getPower())
+                    expName="explosion-R.png";
+                else
+                    expName = "explosion-horizontal";
+                BombFire fb2 = new BombFire(expName);
                 if(foundLimit[1] && fb2.setPosition(bomb.getPosition().getLine(), bomb.getPosition().getColumn()+i)) {
                     foundLimit[1] =Draw.getGameScreen().isValidPosition(fb2.getPosition());
                     Draw.getGameScreen().addElement(fb2);
                 }
 
-                BombFire fb3 = new BombFire( "explosao.png");
+                if(i==bomb.getPower())
+                    expName="explosion-U.png";
+                else
+                    expName = "explosion-vertical";
+                BombFire fb3 = new BombFire( expName);
                 if(foundLimit[2]&& fb3.setPosition(bomb.getPosition().getLine()-i, bomb.getPosition().getColumn())) {
                     foundLimit[2] =Draw.getGameScreen().isValidPosition(fb3.getPosition());
                     Draw.getGameScreen().addElement(fb3);
                 }
 
-                BombFire fb4 = new BombFire("explosao.png");
+                if(i==bomb.getPower())
+                    expName="explosion-D.png";
+                else
+                    expName = "explosion-vertical";
+                BombFire fb4 = new BombFire(expName);
                 if(foundLimit[3]&& fb4.setPosition(bomb.getPosition().getLine()+i, bomb.getPosition().getColumn())) {
                     foundLimit[3] =Draw.getGameScreen().isValidPosition(fb4.getPosition());
                     Draw.getGameScreen().addElement(fb4);

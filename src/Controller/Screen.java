@@ -180,28 +180,22 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }
         //create game hud
         try{
-            BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
-
             Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "lifeUp.png");
-
-            Graphics g2 = bi.createGraphics();
-
-
             graphics.drawImage(newImage,0,  Consts.CELL_SIDE*11, null);
 
-            /*Image img = iImage.getImage();
-            BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
+            newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "powerUp.png");
+            graphics.drawImage(newImage,Consts.CELL_SIDE*2,  Consts.CELL_SIDE*11, null);
 
-            Graphics g = bi.createGraphics();
-            g.drawImage(img, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
-            iImage = new ImageIcon(bi);*/
+
+            newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "bombUp.png");
+            graphics.drawImage(newImage,Consts.CELL_SIDE*4,  Consts.CELL_SIDE*11, null);
 
 
         }catch (IOException er){
             System.out.println(er.getMessage());
         }
         g.dispose();
-        graphics.dispose();
+        //graphics.dispose();
         if (!getBufferStrategy().contentsLost()) {
             getBufferStrategy().show();
         }
