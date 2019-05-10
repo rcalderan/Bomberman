@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author ICMC
  */
-public class LifeUp extends Element {
+public class LifeUp extends Item {
 
     public LifeUp(String sImageNamePNG) {
         super(sImageNamePNG);

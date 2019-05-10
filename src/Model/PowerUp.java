@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author ICMC
  */
-public class PowerUp extends Element {
+public class PowerUp extends Item {
 
     public PowerUp(String sImageNamePNG) {
         super(sImageNamePNG);

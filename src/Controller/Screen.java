@@ -68,82 +68,34 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
                     }
             }
         }
-        for(int i=3;i<Consts.RES;i++){
-            for (int j=0;j<Consts.RES;j++){
-                if(j%2==0) {
-                    Brick br = new Brick("brick.png");
-                    br.setPosition(i, j);
-                    this.addElement(br);
+
+        for(int i = 0; i < (Consts.RES);i++){
+            for(int j = 0; j < (Consts.RES); j++){
+                if(Math.random() < 0.35 && (i != 0 && j!= 0)){
+                    if((i%2 == 0 || j%2 == 0) && (i != 0 && j != 10)){
+                        Brick p = new Brick("brick.png");
+                        p.setPosition(i,j);
+                        this.addElement(p);
+                    }
                 }
             }
         }
 
-        Brick brk1 = new Brick("brick.png");
-        brk1.setPosition(2, 2);
-        this.addElement(brk1);
+        //create monsters
+        for(int i=0;i<4;i++) {
+            Random rand = new Random();
+            Monster monster1 = new Monster("bichinho.png");
+            int x = rand.nextInt(Consts.RES), y = rand.nextInt(Consts.RES);
+            while (!isValidPosition(new Position(x, y))&& x>1 && y>2) {
+                x = rand.nextInt(Consts.RES);
+                y = rand.nextInt(Consts.RES);
+            }
+            monster1.setPosition(x, y);
+            addElement(monster1);
+        }
 
-        Brick brk2 = new Brick("brick.png");
-        brk2.setPosition(2, 4);
-        this.addElement(brk2);
 
-        Brick brk3 = new Brick("brick.png");
-        brk3.setPosition(2, 6);
-        this.addElement(brk3);
 
-        Brick brk4 = new Brick("brick.png");
-        brk4.setPosition(2, 8);
-        this.addElement(brk4);
-
-        Brick brk5 = new Brick("brick.png");
-        brk5.setPosition(2, 10);
-        this.addElement(brk5);
-/*
-        BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("bichinho.png");
-        bBichinhoH.setPosition(3, 3);
-        this.addElement(bBichinhoH);
-
-        Caveira bV = new Caveira("caveira.png");
-        bV.setPosition(9, 1);
-        this.addElement(bV);
-        
-        Bomb b = new Bomb("bomba.png");
-        b.setPosition(8, 8);
-        this.addElement(b);
-        
-        RoboAleatorio rb = new RoboAleatorio("bichinho.png");
-        rb.setPosition(1, 1);
-        this.addElement(rb);
-        
-        Wall t1 = new Wall("parede.png");
-        t1.setPosition(4, 4);
-        BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("bichinho.png");
-        bBichinhoH2.setPosition(6, 6);
-        this.addElement(bBichinhoH2);
-
-        BichinhoVaiVemHorizontal bBichinhoH3 = new BichinhoVaiVemHorizontal("bichinho.png");
-        bBichinhoH3.setPosition(2,9);
-        this.addElement(t1);
-
-        Wall t2 = new Wall("parede.png");
-        t2.setPosition(4, 5);
-        this.addElement(t2);
-
-        Wall t3 = new Wall("parede.png");
-        t3.setPosition(4, 6);
-        this.addElement(t3);
-
-        Wall t4 = new Wall("parede.png");
-        t4.setPosition(0, 6);
-        this.addElement(t4);
-
-        Wall t5 = new Wall("parede.png");
-        t5.setPosition(1, 6);
-        this.addElement(t5);
-
-        Wall t6 = new Wall("parede.png");
-        t6.setPosition(1, 7);
-        this.addElement(t6);
-        */
     }
 
     /**
@@ -158,6 +110,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
      * @param pos position
      * @return Element or null if not found
      */
+
     public ArrayList<Element> getElements(Position pos){
         ArrayList<Element> all =new ArrayList<>();
         for(Element el : eElements){
@@ -173,7 +126,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             if(el instanceof Bomb)
             {
                 bombCount++;
-                if(bombCount>bBomberman.getBombs())
+                if(bombCount>=bBomberman.getBombs())
                     return false;
             }
         }

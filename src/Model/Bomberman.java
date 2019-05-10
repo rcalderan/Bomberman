@@ -9,6 +9,7 @@ import Auxiliar.Consts;
 import Auxiliar.Draw;
 import Auxiliar.Position;
 import Controller.Screen;
+import sun.plugin2.gluegen.runtime.CPU;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,17 +18,37 @@ import java.util.ArrayList;
  *
  * @author Junio
  */
-public class Bomberman extends Element implements Serializable{
+public class Bomberman extends Character implements Serializable{
 
     private int lives;
     private int power;
     private int bombs;
+    private int timer;
+    private int invencibilityCountDown;
 
     public Bomberman(String sImageNamePNG) {
         super(sImageNamePNG);
+        timer=0;
         lives=2;
         power=1;
         bombs=1;
+    }
+
+    /* bomberman lose 1 live and reset his powers to default value
+    He must be invencible for some seconds
+     */
+    public void die(){
+        setLives(getLives() - 1);
+        setPosition(new Position(0,0));//returns to start position
+        power=1;
+        bombs=1;
+        invencibilityCountDown=0;//become invencible
+    }
+    public int getNbomb(){
+        return bombs;
+    }
+    public void setBombs(int nBomb){
+        bombs=nBomb;
     }
 
     public void powerUp(){
@@ -41,45 +62,33 @@ public class Bomberman extends Element implements Serializable{
 
         return this.lives;
     }
+
+    /*
+    Lose life only when not invencible
+     */
     public void setLives(int lives) {
-            System.out.println(lives);
-        this.lives = lives;
+        if(getLives()<lives)
+            this.lives = lives;
+        else if(getLives()>lives && invencibilityCountDown > Consts.INVENCIBILITY_TIME){
+            this.lives = lives;
+        }
     }
 
-    public void setBombs(){
-        this.bombs = this.bombs + 1;
-    }
     public int getBombs(){
         return this.bombs;
     }
 
-
-
     public void autoDraw(){
-        super.autoDraw();
-        Screen screen = Draw.getGameScreen();
-        ArrayList<Element> elementsOnThisPosition = screen.getElements(pPosition);
-        if(elementsOnThisPosition.size()>1)
-            for (Element el :elementsOnThisPosition) {
-                if (el.bMortal) {//die
-                    setLives(getLives() - 1);
-                    setPosition(new Position(0, 0));//returns to start position
-                    if (getLives() == 0) {
-                        //game over...
-                    }
-                }else
-                if(el instanceof PowerUp){
-                    powerUp();
-
-                }else
-                if(el instanceof LifeUp){
-                    setLives(getLives()+1);
-                }else
-                if(el instanceof LifeUp){
-                    setLives(getLives()+1);
-                }
+        timer+=Consts.TIMER;
+        if(timer== Consts.PERIOD){
+            timer=0;
+            if(invencibilityCountDown<=Consts.INVENCIBILITY_TIME){
+                invencibilityCountDown++;
             }
+        }
+        super.autoDraw();
     }
+
 
 
     public void backToLastPosition(){
