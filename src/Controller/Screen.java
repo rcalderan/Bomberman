@@ -13,10 +13,8 @@ package Controller;
 import Model.*;
 import Auxiliar.*;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.Timer;
@@ -56,7 +54,6 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         this.addElement(bBomberman);
 
 
-
         // set indestrutible wall
         for(int i=0;i<Consts.RES;i++){
             if(i%2!=0)
@@ -69,6 +66,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             }
         }
 
+        //set Bricks
         for(int i = 0; i < (Consts.RES);i++){
             for(int j = 0; j < (Consts.RES); j++){
                 if(Math.random() < 0.35 && (i != 0 && j!= 0)){
@@ -120,10 +118,14 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         return all;
     }
 
+    /**
+     * Check if a bomb could be placed
+     * @return true could, false if could not
+     */
     public boolean couldPlaceBomb(){
         int bombCount=0;
         for(Element el : eElements){
-            if(el instanceof Bomb)
+            if(el.toString().equals("Bomb"))
             {
                 bombCount++;
                 if(bombCount>=bBomberman.getBombs())
@@ -131,6 +133,24 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             }
         }
         return true;
+    }
+
+    /**
+     * update non static game Hud elements
+     */
+    public void updateHUD(){
+        //clear screen
+        graphics.clearRect(Consts.CELL_SIDE,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
+        graphics.clearRect(Consts.CELL_SIDE*3,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
+        graphics.clearRect(Consts.CELL_SIDE*5,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
+        //lives
+        Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getLives()),Consts.CELL_SIDE,  Consts.CELL_SIDE*12);
+        //power
+        Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getPower()),Consts.CELL_SIDE*3,  Consts.CELL_SIDE*12);
+        //bombs
+        Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getBombs()),Consts.CELL_SIDE*5,  Consts.CELL_SIDE*12);
+
+
     }
 
 /*--------------------------------------------------*/
@@ -178,7 +198,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             this.gameController.drawEverything(eElements);
             this.gameController.processEverything(eElements);
         }
-        //create game hud
+        //create game hud: static
         try{
             Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "lifeUp.png");
             graphics.drawImage(newImage,0,  Consts.CELL_SIDE*11, null);
@@ -194,8 +214,10 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }catch (IOException er){
             System.out.println(er.getMessage());
         }
+
+        updateHUD();
         g.dispose();
-        //graphics.dispose();
+        graphics.dispose();
         if (!getBufferStrategy().contentsLost()) {
             getBufferStrategy().show();
         }

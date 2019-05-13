@@ -18,7 +18,7 @@ public class GameController {
     public void drawEverything(ArrayList<Element> e){
         for(int i = 0; i < e.size(); i++){
             e.get(i).autoDraw();
-            if(e.get(i) instanceof Bomb){
+            if(e.get(i).toString().equals("Bomb")){
                 Bomb b = (Bomb) e.get(i);
                 if(b.getCountDown()>=Consts.TIMER_BOMB)
                     explode(b);
@@ -48,25 +48,25 @@ public class GameController {
 
                 }else{
                     if(eTemp.isbTransposable()){
-                        if(eTemp instanceof PowerUp){
+                        if(eTemp.toString().equals("PowerUp")){
                             bBomberman.powerUp();
                             e.remove(eTemp);
                         }else
-                        if(eTemp instanceof LifeUp){
+                        if(eTemp.toString().equals("LifeUp")){
                             bBomberman.setLives(bBomberman.getLives()+1);
                             e.remove(eTemp);
                         }else
-                        if(eTemp instanceof BombUp){
+                        if(eTemp.toString().equals("BombUp")){
                             bBomberman.setBombs(bBomberman.getBombs()+1);
                             e.remove(eTemp);
                         }else
-                        if(eTemp instanceof Door){
+                        if(eTemp.toString().equals("Door")){
                             /*Verifica se não tem nenhum monstro no mapa,
                             se não tem, vai pra proxima fase.
                             */
                             int MonstrosVivos = 0;
                             for(int k = 1; k < e.size(); k++){
-                                if(e.get(k)instanceof Monster){
+                                if(e.get(k).toString().equals("Monster")){
                                     MonstrosVivos++;
                                 }
                             }
@@ -78,29 +78,30 @@ public class GameController {
                     }
                 }
             }
+
             boolean randomElem = false;
             for(int j=1; j < e.size(); j++ ){
                 //Se o objeto é um monstro ou uma parede de tijolos e está na mesma posíção da bomba ele some.
                 Element eTemp2 = e.get(j);
                 if(eTemp.getPosition().equals(eTemp2.getPosition())){
-                    if((eTemp2 instanceof BombFire)){
-                        if(eTemp instanceof Monster ){
+                    if((eTemp2.toString().equals("BombFire"))){
+                        if(eTemp.toString().equals("Monster" )){
                             e.remove(eTemp);
-                        }else if(eTemp instanceof Brick){
+                        }else if(eTemp.toString().equals("Brick")){
                                 e.remove(eTemp);
                                 e.remove(eTemp2);
                                 randomElem=true;
-                        }else if(eTemp instanceof Bomb){
+                        }else if(eTemp.toString().equals("Bomb")){
                             ((Bomb)eTemp).setCountDown(Consts.TIMER_BOMB);
                         }
 
 
 
                     }
-                    if( (eTemp instanceof Monster ) && (eTemp2 instanceof BombFire)){
+                    if( (eTemp.toString().equals("Monster")) && (eTemp2.toString().equals("BombFire"))){
                         e.remove(eTemp);
                     }else
-                    if( (eTemp instanceof Brick ) && (eTemp2 instanceof BombFire)) {
+                    if( (eTemp.toString().equals("Brick")) && (eTemp2.toString().equals("BombFire"))) {
 
                     }
                 }
@@ -175,7 +176,7 @@ public class GameController {
                 if(i==bomb.getPower())
                     expName="explosion-L.png";
                 else
-                    expName = "explosion-horizontal";
+                    expName = "explosion-horizontal.png";
                 BombFire fb = new BombFire(expName);
                 if(foundLimit[0] && fb.setPosition(bomb.getPosition().getLine(), bomb.getPosition().getColumn()-i)){
                     foundLimit[0] = Draw.getGameScreen().isValidPosition(fb.getPosition());
@@ -185,7 +186,7 @@ public class GameController {
                 if(i==bomb.getPower())
                     expName="explosion-R.png";
                 else
-                    expName = "explosion-horizontal";
+                    expName = "explosion-horizontal.png";
                 BombFire fb2 = new BombFire(expName);
                 if(foundLimit[1] && fb2.setPosition(bomb.getPosition().getLine(), bomb.getPosition().getColumn()+i)) {
                     foundLimit[1] =Draw.getGameScreen().isValidPosition(fb2.getPosition());
@@ -195,7 +196,7 @@ public class GameController {
                 if(i==bomb.getPower())
                     expName="explosion-U.png";
                 else
-                    expName = "explosion-vertical";
+                    expName = "explosion-vertical.png";
                 BombFire fb3 = new BombFire( expName);
                 if(foundLimit[2]&& fb3.setPosition(bomb.getPosition().getLine()-i, bomb.getPosition().getColumn())) {
                     foundLimit[2] =Draw.getGameScreen().isValidPosition(fb3.getPosition());
@@ -205,7 +206,7 @@ public class GameController {
                 if(i==bomb.getPower())
                     expName="explosion-D.png";
                 else
-                    expName = "explosion-vertical";
+                    expName = "explosion-vertical.png";
                 BombFire fb4 = new BombFire(expName);
                 if(foundLimit[3]&& fb4.setPosition(bomb.getPosition().getLine()+i, bomb.getPosition().getColumn())) {
                     foundLimit[3] =Draw.getGameScreen().isValidPosition(fb4.getPosition());

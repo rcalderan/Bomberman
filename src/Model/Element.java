@@ -36,13 +36,13 @@ public abstract class Element implements Serializable {
         return bMortal;
     }
  
-    protected Element(String sNomeImagePNG) {
+    protected Element(String sImageNamePng) {
         this.pPosition = new Position(1, 1);
         this.bTransposable = true;
         this.bMortal = false;
         this.bKill = false;
         try {
-            iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sNomeImagePNG);
+            iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sImageNamePng);
             Image img = iImage.getImage();
             BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
             Graphics g = bi.createGraphics();
@@ -109,6 +109,14 @@ public abstract class Element implements Serializable {
             iImage = new ImageIcon(bi);
         } catch (IOException ex) {
             Logger.getLogger(Bomb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public String toString(){//avoid instanceof
+        try{
+            // String s = getClass().getEnclosingClass().getName();
+            return getClass().getName().substring(6);//remove "Model." and return only classname
+        }catch (Exception e){
+            return getClass().getName();
         }
     }
 }

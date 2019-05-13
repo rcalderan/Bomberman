@@ -29,7 +29,7 @@ public class Bomberman extends Character implements Serializable{
     public Bomberman(String sImageNamePNG) {
         super(sImageNamePNG);
         timer=0;
-        lives=2;
+        lives=3;
         power=1;
         bombs=1;
     }
@@ -43,16 +43,19 @@ public class Bomberman extends Character implements Serializable{
         power=1;
         bombs=1;
         invencibilityCountDown=0;//become invencible
+        Draw.getGameScreen().updateHUD();
     }
     public int getNbomb(){
         return bombs;
     }
     public void setBombs(int nBomb){
         bombs=nBomb;
+        Draw.getGameScreen().updateHUD();
     }
 
     public void powerUp(){
         this.power = this.power + 1;
+        Draw.getGameScreen().updateHUD();
     }
     public int getPower(){
         return this.power;
@@ -72,6 +75,7 @@ public class Bomberman extends Character implements Serializable{
         else if(getLives()>lives && invencibilityCountDown > Consts.INVENCIBILITY_TIME){
             this.lives = lives;
         }
+        Draw.getGameScreen().updateHUD();
     }
 
     public int getBombs(){
