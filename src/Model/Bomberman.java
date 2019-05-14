@@ -26,24 +26,39 @@ public class Bomberman extends Character implements Serializable{
     private int timer;
     private int invencibilityCountDown;
 
+    public boolean isInvencible() {
+        return invencible;
+    }
+
+    public void setInvencible(boolean invencible) {
+        invencibilityCountDown=0;
+        this.invencible = invencible;
+    }
+
+    private boolean invencible;
+
     public Bomberman(String sImageNamePNG) {
         super(sImageNamePNG);
         timer=0;
         lives=3;
         power=1;
         bombs=1;
+        invencible=false;
+        invencibilityCountDown= Consts.INVENCIBILITY_TIME;
     }
 
     /* bomberman lose 1 live and reset his powers to default value
     He must be invencible for some seconds
      */
     public void die(){
-        setLives(getLives() - 1);
-        setPosition(new Position(0,0));//returns to start position
-        power=1;
-        bombs=1;
-        invencibilityCountDown=0;//become invencible
-        Draw.getGameScreen().updateHUD();
+        if(!isInvencible()) {
+            setLives(getLives() - 1);
+            setPosition(new Position(0, 0));//returns to start position
+            power = 1;
+            bombs = 1;
+            setInvencible(true);
+            Draw.getGameScreen().updateHUD();
+        }
     }
     public int getNbomb(){
         return bombs;
@@ -52,6 +67,7 @@ public class Bomberman extends Character implements Serializable{
         bombs=nBomb;
         Draw.getGameScreen().updateHUD();
     }
+
 
     public void powerUp(){
         this.power = this.power + 1;
@@ -70,11 +86,7 @@ public class Bomberman extends Character implements Serializable{
     Lose life only when not invencible
      */
     public void setLives(int lives) {
-        if(getLives()<lives)
-            this.lives = lives;
-        else if(getLives()>lives && invencibilityCountDown > Consts.INVENCIBILITY_TIME){
-            this.lives = lives;
-        }
+        this.lives = lives;
         Draw.getGameScreen().updateHUD();
     }
 
@@ -84,11 +96,13 @@ public class Bomberman extends Character implements Serializable{
 
     public void autoDraw(){
         timer+=Consts.TIMER;
-        if(timer== Consts.PERIOD){
+        if(timer== Consts.PERIOD/8){
             timer=0;
             if(invencibilityCountDown<=Consts.INVENCIBILITY_TIME){
                 invencibilityCountDown++;
             }
+            else
+                setInvencible(false);
         }
         super.autoDraw();
     }

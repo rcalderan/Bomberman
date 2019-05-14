@@ -18,7 +18,7 @@ public class LifeUp extends Item {
     public LifeUp(String sImageNamePNG) {
         super(sImageNamePNG);
     }
-
+/*
     public void autoDraw(){
         super.autoDraw();
         ArrayList<Element> posElements= Draw.getGameScreen().getElements(pPosition);
@@ -30,6 +30,6 @@ public class LifeUp extends Item {
                 }
             }
         }
-    }
+    }*/
     
 }

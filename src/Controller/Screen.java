@@ -53,6 +53,8 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         bBomberman.setPosition(0, 0);
         this.addElement(bBomberman);
 
+        //wont place monsters in "notHere" positions
+        ArrayList<Position> notHere = new ArrayList<>();
 
         // set indestrutible wall
         for(int i=0;i<Consts.RES;i++){
@@ -61,6 +63,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
                     if(j%2!=0) {
                         Wall wall = new Wall("wall.png");
                         wall.setPosition(i, j);
+                        notHere.add(wall.getPosition());
                         this.addElement(wall);
                     }
             }
@@ -73,6 +76,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
                     if((i%2 == 0 || j%2 == 0) && (i != 0 && j != 10)){
                         Brick p = new Brick("brick.png");
                         p.setPosition(i,j);
+                        notHere.add(p.getPosition());
                         this.addElement(p);
                     }
                 }
@@ -82,14 +86,15 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         //create monsters
         for(int i=0;i<4;i++) {
             Random rand = new Random();
-            Monster monster1 = new Monster("bichinho.png");
+            Balloon monster1 = new Balloon("balloon.png");
             int x = rand.nextInt(Consts.RES), y = rand.nextInt(Consts.RES);
-            while (!isValidPosition(new Position(x, y))&& x>1 && y>2) {
+            Position aux = new Position(x, y);
+            while (!isValidPosition(aux)&& x>5 && y>6 && notHere.contains(aux)) {
                 x = rand.nextInt(Consts.RES);
                 y = rand.nextInt(Consts.RES);
             }
             monster1.setPosition(x, y);
-            addElement(monster1);
+            //addElement(monster1);
         }
 
 
@@ -144,11 +149,11 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         graphics.clearRect(Consts.CELL_SIDE*3,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
         graphics.clearRect(Consts.CELL_SIDE*5,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
         //lives
-        Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getLives()),Consts.CELL_SIDE,  Consts.CELL_SIDE*12);
+        Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getLives()),Consts.CELL_SIDE,  Consts.CELL_SIDE*12-5);
         //power
-        Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getPower()),Consts.CELL_SIDE*3,  Consts.CELL_SIDE*12);
+        Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getPower()),Consts.CELL_SIDE*3,  Consts.CELL_SIDE*12-5);
         //bombs
-        Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getBombs()),Consts.CELL_SIDE*5,  Consts.CELL_SIDE*12);
+        Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getBombs()),Consts.CELL_SIDE*5,  Consts.CELL_SIDE*12-5);
 
 
     }
@@ -200,6 +205,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }
         //create game hud: static
         try{
+            graphics.setFont(new Font("Arial", Font.PLAIN, 50));
             Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "lifeUp.png");
             graphics.drawImage(newImage,0,  Consts.CELL_SIDE*11, null);
 

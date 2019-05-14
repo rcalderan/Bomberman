@@ -1,7 +1,7 @@
 package Model;
 
-public class Item extends Element {
-    protected Item(String sNomeImagePNG) {
+public abstract class Item extends Element {
+    public Item(String sNomeImagePNG) {
         super(sNomeImagePNG);
     }
 }

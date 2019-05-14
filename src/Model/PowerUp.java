@@ -18,7 +18,7 @@ public class PowerUp extends Item {
     public PowerUp(String sImageNamePNG) {
         super(sImageNamePNG);
     }
-
+/*
     public void autoDraw(){
         super.autoDraw();
         ArrayList<Element> posElements= Draw.getGameScreen().getElements(pPosition);
@@ -30,5 +30,5 @@ public class PowerUp extends Item {
                 }
             }
         }
-    }
+    }*/
 }
