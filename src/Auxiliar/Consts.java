@@ -24,9 +24,9 @@ public class Consts {
 
     //itens
     public static final int TIMER_BOMB = 1760; //keep multiple of const PERIOD
-    public static final int BOMB_PROBABILITY = 50;// spaw probability in percent
-    public static final int POWERUP_PROBABILITY = 55;// spaw probability in percent
-    public static final int LIFEUP_PROBABILITY = 30;// spaw probability in percent
+    public static final int BOMB_PROBABILITY = 30;// spaw probability in percent
+    public static final int POWERUP_PROBABILITY = 30;// spaw probability in percent
+    public static final int LIFEUP_PROBABILITY = 10;// spaw probability in percent
 
     // number max per stage
     public static final int MAX_POWERUP_STAGE = 4;

@@ -21,7 +21,7 @@ public class GameController {
             //seek and destroy!
             if(e.get(i).toString().equals("Bomb")){
                 Bomb b = (Bomb) e.get(i);
-                if(b.getCountDown()>=Consts.TIMER_BOMB)
+                if(b.getReadyToExplode())
                     b.explodeIt();
             }
             else if(e.get(i).toString().equals("BombFire") && Draw.getGameScreen().getBomberman().getPosition().equals(e.get(i).getPosition())) {
@@ -63,18 +63,14 @@ public class GameController {
                             e.remove(eTemp);
                         }else
                         if(eTemp.toString().equals("Door")){
-                            /*Verifica se não tem nenhum monstro no mapa,
-                            se não tem, vai pra proxima fase.
-                            */
-                            int MonstrosVivos = 0;
+                            int monstersAlive = 0;
                             for(int k = 1; k < e.size(); k++){
                                 if(e.get(k).toString().equals("Monster")){
-                                    MonstrosVivos++;
+                                    monstersAlive++;
                                 }
                             }
-                            if(MonstrosVivos == 0){/*Se não tem nenhum monstro vivo
-                                pode ir pra próxima fase, se não não faz nada*/
-
+                            if(monstersAlive == 0){//game ends when there are no monsters to kill
+                                System.exit(0);
                             }
                         }
                     }
@@ -90,10 +86,10 @@ public class GameController {
                             e.remove(eTemp);
                         }else if(eTemp.toString().equals("Brick")){
                                 e.remove(eTemp);
-                                e.remove(eTemp2);
+                                Draw.getGameScreen().removeElement((eTemp2));
                                 randomElem=true;
                         }else if(eTemp.toString().equals("Bomb")){
-                            ((Bomb)eTemp).setCountDown(Consts.TIMER_BOMB);
+                            ((Bomb)eTemp).isReadyToExplode(true);
                         }else if(eTemp.toString().equals("PowerUp")||eTemp.toString().equals("LifeUp")||eTemp.toString().equals("BombUp")){
                             e.remove(eTemp);
                         }

@@ -26,7 +26,7 @@ public abstract class Element implements Serializable {
     protected Position pPosition;
     protected boolean bTransposable; /*Pode passar por cima?*/
     protected boolean bMortal;       /*Se encostar, o Bomberman morre?*/
-    protected boolean bKill;        /*No proximo processamento, retirar da lista de elementos*/
+    private boolean bKill;        /*No proximo processamento, retirar da lista de elementos*/
 
     public boolean isbKill() {
         return bKill;
@@ -40,7 +40,7 @@ public abstract class Element implements Serializable {
         this.pPosition = new Position(1, 1);
         this.bTransposable = true;
         this.bMortal = false;
-        this.bKill = false;
+        this.setbKill(false);
         try {
             iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sImageNamePng);
             Image img = iImage.getImage();
@@ -118,5 +118,9 @@ public abstract class Element implements Serializable {
         }catch (Exception e){
             return getClass().getName();
         }
+    }
+
+    public void setbKill(boolean bKill) {
+        this.bKill = bKill;
     }
 }

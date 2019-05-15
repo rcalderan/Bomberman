@@ -15,7 +15,7 @@ public class BombFire extends Element{
         super.autoDraw();
         iCountTempo++;
         if(iCountTempo >= Consts.TIMER){
-            this.bKill=true;
+            this.setbKill(true);
             //Draw.getGameScreen().removeElement(this);
         }
 
