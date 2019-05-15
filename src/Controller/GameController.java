@@ -22,7 +22,7 @@ public class GameController {
             if(e.get(i).toString().equals("Bomb")){
                 Bomb b = (Bomb) e.get(i);
                 if(b.getCountDown()>=Consts.TIMER_BOMB)
-                    explode(b);
+                    b.explodeIt();
             }
             else if(e.get(i).toString().equals("BombFire") && Draw.getGameScreen().getBomberman().getPosition().equals(e.get(i).getPosition())) {
                 Draw.getGameScreen().getBomberman().die();
@@ -45,8 +45,7 @@ public class GameController {
                 if(eTemp.isbMortal()) {
                     bBomberman.die();
                     if(bBomberman.getLives() <= 0 ){
-                        //bomberman morre. O jogo deve terminar
-                        //Como terminar o o jogo?
+                        System.exit(0);
                     }
 
                 }else{
@@ -95,13 +94,9 @@ public class GameController {
                                 randomElem=true;
                         }else if(eTemp.toString().equals("Bomb")){
                             ((Bomb)eTemp).setCountDown(Consts.TIMER_BOMB);
+                        }else if(eTemp.toString().equals("PowerUp")||eTemp.toString().equals("LifeUp")||eTemp.toString().equals("BombUp")){
+                            e.remove(eTemp);
                         }
-
-                    }
-                    if( (eTemp.toString().equals("Monster")) && (eTemp2.toString().equals("BombFire"))){
-                        e.remove(eTemp);
-                    }else
-                    if( (eTemp.toString().equals("Brick")) && (eTemp2.toString().equals("BombFire"))) {
 
                     }
                 }
@@ -160,61 +155,5 @@ public class GameController {
         return true;
     }
 
-    /**
-     * Create a bomb explosion
-     * @param bomb bomb to explode
-     */
-    public void explode(Bomb bomb){
-        if(bomb.getCountDown()>= Consts.TIMER_BOMB){
-            boolean[] explosionLimit = new boolean[]{true,true,true,true};
-            BombFire f = new BombFire("explosion.png");
-
-            f.setPosition(bomb.getPosition());
-            Draw.getGameScreen().addElement(f);
-            for(int i=1;i<=bomb.getPower();i++){
-                String expName;
-
-                if(i==bomb.getPower())
-                    expName="explosion-L.png";
-                else
-                    expName = "explosion-horizontal.png";
-                BombFire fb = new BombFire(expName);
-                if(explosionLimit[0] && fb.setPosition(bomb.getPosition().getLine(), bomb.getPosition().getColumn()-i)){
-                    explosionLimit[0] = Draw.getGameScreen().isValidPosition(fb.getPosition());
-                    Draw.getGameScreen().addElement(fb);
-                }
-
-                if(i==bomb.getPower())
-                    expName="explosion-R.png";
-                else
-                    expName = "explosion-horizontal.png";
-                BombFire fb2 = new BombFire(expName);
-                if(explosionLimit[1] && fb2.setPosition(bomb.getPosition().getLine(), bomb.getPosition().getColumn()+i)) {
-                    explosionLimit[1] =Draw.getGameScreen().isValidPosition(fb2.getPosition());
-                    Draw.getGameScreen().addElement(fb2);
-                }
-
-                if(i==bomb.getPower())
-                    expName="explosion-U.png";
-                else
-                    expName = "explosion-vertical.png";
-                BombFire fb3 = new BombFire( expName);
-                if(explosionLimit[2]&& fb3.setPosition(bomb.getPosition().getLine()-i, bomb.getPosition().getColumn())) {
-                    explosionLimit[2] =Draw.getGameScreen().isValidPosition(fb3.getPosition());
-                    Draw.getGameScreen().addElement(fb3);
-                }
-
-                if(i==bomb.getPower())
-                    expName="explosion-D.png";
-                else
-                    expName = "explosion-vertical.png";
-                BombFire fb4 = new BombFire(expName);
-                if(explosionLimit[3]&& fb4.setPosition(bomb.getPosition().getLine()+i, bomb.getPosition().getColumn())) {
-                    explosionLimit[3] =Draw.getGameScreen().isValidPosition(fb4.getPosition());
-                    Draw.getGameScreen().addElement(fb4);
-                }
-            }
-        }
-    }
 
 }

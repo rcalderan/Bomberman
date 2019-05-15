@@ -24,17 +24,7 @@ public class Bomberman extends Character implements Serializable{
     private int power;
     private int bombs;
     private int timer;
-    private int invencibilityCountDown;
-
-    public boolean isInvencible() {
-        return invencible;
-    }
-
-    public void setInvencible(boolean invencible) {
-        invencibilityCountDown=0;
-        this.invencible = invencible;
-    }
-
+    private int invencibilityCountDown;//became invercible for a short time when die
     private boolean invencible;
 
     public Bomberman(String sImageNamePNG) {
@@ -47,6 +37,14 @@ public class Bomberman extends Character implements Serializable{
         invencibilityCountDown= Consts.INVENCIBILITY_TIME;
     }
 
+    public boolean isInvencible() {
+        return invencible;
+    }
+
+    public void setInvencible(boolean invencible) {
+        invencibilityCountDown=0;
+        this.invencible = invencible;
+    }
     /* bomberman lose 1 live and reset his powers to default value
     He must be invencible for some seconds
      */
@@ -96,6 +94,8 @@ public class Bomberman extends Character implements Serializable{
 
     public void autoDraw(){
         timer+=Consts.TIMER;
+
+
         if(timer== Consts.PERIOD/8){
             timer=0;
             if(invencibilityCountDown<=Consts.INVENCIBILITY_TIME){

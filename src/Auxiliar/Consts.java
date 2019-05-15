@@ -24,14 +24,14 @@ public class Consts {
 
     //itens
     public static final int TIMER_BOMB = 1760; //keep multiple of const PERIOD
-    public static final int BOMB_PROBABILITY = 15;// spaw probability in percent
-    public static final int MAX_BOMB_STAGE = 4;// spaw probability in percent
+    public static final int BOMB_PROBABILITY = 50;// spaw probability in percent
+    public static final int POWERUP_PROBABILITY = 55;// spaw probability in percent
+    public static final int LIFEUP_PROBABILITY = 30;// spaw probability in percent
 
-    public static final int POWERUP_PROBABILITY = 53;// spaw probability in percent
-    public static final int MAX_POWERUP_STAGE = 4;// spaw probability in percent
-
-    public static final int LIFEUP_PROBABILITY = 5;// spaw probability in percent
-    public static final int MAX_LIFEUP_STAGE = 1;// spaw probability in percent
+    // number max per stage
+    public static final int MAX_POWERUP_STAGE = 4;
+    public static final int MAX_BOMB_STAGE = 4;
+    public static final int MAX_LIFEUP_STAGE = 1;
 
     public enum DIRECTION{
         UP,RIGHT,LEFT,DOWN;

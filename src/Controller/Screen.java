@@ -84,17 +84,23 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }
 
         //create monsters
-        for(int i=0;i<4;i++) {
-            Random rand = new Random();
-            Balloon monster1 = new Balloon("balloon.png");
+        Random rand =new Random();
+        int numberOfMonsters=rand.nextInt(8);
+        while( numberOfMonsters<4){
+            numberOfMonsters =rand.nextInt(8);
+        }
+        for(int i=0;i<numberOfMonsters;i++) {
+            Balloon monster1 = new Balloon("bichinho.png");
             int x = rand.nextInt(Consts.RES), y = rand.nextInt(Consts.RES);
             Position aux = new Position(x, y);
-            while (!isValidPosition(aux)&& x>5 && y>6 && notHere.contains(aux)) {
+            while (!isValidPosition(aux)|| notHere.contains(aux)) {
                 x = rand.nextInt(Consts.RES);
                 y = rand.nextInt(Consts.RES);
+                aux=new Position(x,y);
             }
             monster1.setPosition(x, y);
-            //addElement(monster1);
+            notHere.add(monster1.getPosition());
+            addElement(monster1);
         }
 
 
@@ -241,9 +247,9 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_C) {
-            this.eElements.clear();
+            //this.eElements.clear();
         } else if (e.getKeyCode() == KeyEvent.VK_L) {
-            try {
+            /*try {
                 File tanque = new File("c:\\temp\\POO.zip");
                 FileInputStream canoOut = new FileInputStream(tanque);
                 GZIPInputStream compactador = new GZIPInputStream(canoOut);
@@ -252,9 +258,9 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
                 serializador.close();
             } catch (Exception ex) {
                 Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         } else if (e.getKeyCode() == KeyEvent.VK_S) {
-            try {
+            /*try {
                 File tanque = new File("c:\\temp\\POO.zip");
                 tanque.createNewFile();
                 FileOutputStream canoOut = new FileOutputStream(tanque);
@@ -265,7 +271,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
                 serializador.close();
             } catch (IOException ex) {
                 Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             bBomberman.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
