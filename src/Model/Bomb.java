@@ -67,8 +67,8 @@ public class Bomb extends Element implements Serializable{
             else
                 expName = "explosion-horizontal.png";
             BombFire fb = new BombFire(expName);
-            if(explosionLimit[0]){
-                fb.setPosition(getPosition().getLine(), getPosition().getColumn()-i);
+            if(explosionLimit[0]&&fb.setPosition(getPosition().getLine(), getPosition().getColumn()-i)){
+
                 explosionLimit[0] = Draw.getGameScreen().isValidPosition(fb.getPosition());
                 Draw.getGameScreen().addElement(fb);
             }
@@ -78,8 +78,8 @@ public class Bomb extends Element implements Serializable{
             else
                 expName = "explosion-horizontal.png";
             BombFire fb2 = new BombFire(expName);
-            if(explosionLimit[1]) {
-                fb2.setPosition(getPosition().getLine(), getPosition().getColumn()+i);
+            if(explosionLimit[1]&&fb2.setPosition(getPosition().getLine(), getPosition().getColumn()+i)) {
+
                 explosionLimit[1] =Draw.getGameScreen().isValidPosition(fb2.getPosition());
                 Draw.getGameScreen().addElement(fb2);
             }
@@ -89,8 +89,8 @@ public class Bomb extends Element implements Serializable{
             else
                 expName = "explosion-vertical.png";
             BombFire fb3 = new BombFire( expName);
-            if(explosionLimit[2]) {
-                fb3.setPosition(getPosition().getLine()-i, getPosition().getColumn());
+            if(explosionLimit[2]&&fb3.setPosition(getPosition().getLine()-i, getPosition().getColumn())) {
+
                 explosionLimit[2] =Draw.getGameScreen().isValidPosition(fb3.getPosition());
                 Draw.getGameScreen().addElement(fb3);
             }
@@ -100,8 +100,8 @@ public class Bomb extends Element implements Serializable{
             else
                 expName = "explosion-vertical.png";
             BombFire fb4 = new BombFire(expName);
-            if(explosionLimit[3]) {
-                fb4.setPosition(getPosition().getLine()+i, getPosition().getColumn());
+            if(explosionLimit[3]&&fb4.setPosition(getPosition().getLine()+i, getPosition().getColumn())) {
+
                 explosionLimit[3] =Draw.getGameScreen().isValidPosition(fb4.getPosition());
                 Draw.getGameScreen().addElement(fb4);
             }

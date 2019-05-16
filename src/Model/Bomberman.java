@@ -85,6 +85,8 @@ public class Bomberman extends Character implements Serializable{
      */
     public void setLives(int lives) {
         this.lives = lives;
+        if(lives==0)
+            System.exit(0);
         Draw.getGameScreen().updateHUD();
     }
 
