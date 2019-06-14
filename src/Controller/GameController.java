@@ -97,6 +97,10 @@ public class GameController {
                                 bBomberman.setBombs(bBomberman.getBombs()+1);
                                 e.remove(eTemp);
                             }else
+                                if(eTemp.toString().equals("RemoteUp")){
+                                bBomberman.setBombType(Bomb.BOMBTYPE.REMOTE);
+                                e.remove(eTemp);
+                            }else
                             if(eTemp.toString().equals("Door")){
                             /*Verifica se não tem nenhum monstro no mapa,
                             se não tem, vai pra proxima fase.
@@ -163,8 +167,14 @@ public class GameController {
             return upItem;
         }
         rand = r.nextInt(100);
-        if (rand > 0 && rand<=Consts.BOMB_PROBABILITY) {
+        if (rand > 0 && rand<=Consts.NORMALBOMB_PROBABILITY) {
             upItem =new BombUp("bombUp.png");
+            upItem.setPosition(p);
+            return upItem;
+        }
+        rand = r.nextInt(100);
+        if (rand > 0 && rand<=Consts.TRIGGERBOMB_PROBABILITY) {
+            upItem =new RemoteUp("RemoteUp.png");
             upItem.setPosition(p);
             return upItem;
         }

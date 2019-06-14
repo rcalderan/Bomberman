@@ -18,6 +18,14 @@ Na classe Screen:
 
     void paint() Mostra a String GAME PAUSED (Aqui pode alterar quando tiver troca de stage).
 
-    no Evento de controle de tecla (no caso a tecla C) chama a instancia de GameController para pausar ou continuar
+    no Evento de controle de tecla (no caso a tecla P) chama a instancia de GameController para pausar ou continuar
 
     Para evitar que o bomberman continue a se mover, checka se o game está pausado
+
+14/6/2019
+    Adicionado novo tipo de bomba> RemoteBomb. explode somente ao comando do Bomberman
+    A bomba remoto explode somente ao comando do Bomberman.
+    Ao apertar o botao C a primeira bomba explode imediatamente (e somente ela, amenos que aperte de novo para explodir a proxima).
+
+    Novo Item adicionado RemoteUp.
+    Este item muda o tipo de bomba que o personagem emite: Remote Bomb

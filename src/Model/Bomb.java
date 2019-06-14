@@ -20,12 +20,14 @@ public class Bomb extends Element implements Serializable{
     private int countDown;
     private int power;  //explosion range
     private boolean readyToExplode;
-    public Bomb(String sImageNamePNG, int power) {
+    private BOMBTYPE type;
 
+    public Bomb(String sImageNamePNG, int power) {
         super(sImageNamePNG);
         countDown =0;
         this.power=power;
         isReadyToExplode(false);
+        type = BOMBTYPE.NORMAL;
     }
 
     public int getPower(){
@@ -40,15 +42,28 @@ public class Bomb extends Element implements Serializable{
     public boolean getReadyToExplode() {
         return readyToExplode;
     }
-    
-    public void autoDraw(){
-        countDown += Consts.PERIOD;
 
-        if(countDown == 80){
-            this.bTransposable = false;//Bug aqui...  a bomba fica instransposable. ai nao pode ser explodida pela explosao de outra bomba...
-        }else if(countDown >= Consts.TIMER_BOMB){
-            this.setbKill(true);
-            isReadyToExplode(true);
+    public BOMBTYPE getType() { return type; }
+
+    /**
+     * Set bombType. Change bombe appearance if not normal type
+     * @param type
+     */
+    public void setType(BOMBTYPE type) {
+        this.type = type;
+        if(type.equals(BOMBTYPE.REMOTE))
+            changeAppearance("BombRemote.png");
+    }
+
+    public void autoDraw(){
+        if(type.equals(BOMBTYPE.NORMAL)){
+            countDown += Consts.PERIOD;
+            if(countDown == 80){
+                this.bTransposable = false;//Bug aqui...  a bomba fica instransposable. ai nao pode ser explodida pela explosao de outra bomba...
+            }else if(countDown >= Consts.TIMER_BOMB){
+                this.setbKill(true);
+                isReadyToExplode(true);
+            }
         }
         super.autoDraw();
     }
@@ -69,18 +84,6 @@ public class Bomb extends Element implements Serializable{
             }
         }
         return true;
-    }
-
-    //NOT USED
-    private boolean isBrick(ArrayList<Element> elements, Position p) {
-        for (Element e : elements) {
-            if (e.getPosition().equals(p)) {
-                if (e.toString().equals("Brick")) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**
@@ -176,5 +179,9 @@ public class Bomb extends Element implements Serializable{
         if(readyToExplode)
             countDown = Consts.TIMER_BOMB;
         this.readyToExplode = readyToExplode;
+    }
+
+    public enum BOMBTYPE{
+        NORMAL, REMOTE;
     }
 }

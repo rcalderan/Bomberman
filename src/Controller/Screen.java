@@ -13,14 +13,13 @@ package Controller;
 import Model.*;
 import Auxiliar.*;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.Timer;
 import java.util.logging.*;
-import java.util.zip.*;
+
 /**
  * @author Richard Calderan - 3672382
  * @author Leticia Burla - 10294950
@@ -255,13 +254,27 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
 
     public void keyPressed(KeyEvent e) {
         boolean gameState = gameController.getGamePause();
-        if (e.getKeyCode() == KeyEvent.VK_C) {
+        if (e.getKeyCode() == KeyEvent.VK_P) {
             graphics.clearRect(Consts.CELL_SIDE,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
             gameController.setGamePaused(!gameState);
             paint(graphics);
             //clearScreen();
             //this.eElements.clear();
-        } else if (e.getKeyCode() == KeyEvent.VK_L) {
+        }if (e.getKeyCode() == KeyEvent.VK_C) {
+            for(Element element : eElements){
+                if(element.toString().equals("Bomb")){
+                    var b = (Bomb)element;
+                    if(b.getType().equals(Bomb.BOMBTYPE.REMOTE))
+                    {
+                        b.isReadyToExplode(true);
+                        break;
+                    }
+                }
+            }
+            //explode imediattly the first trigger bomb placed
+        }
+
+        else if (e.getKeyCode() == KeyEvent.VK_L) {
             /*try {
                 File tanque = new File("c:\\temp\\POO.zip");
                 FileInputStream canoOut = new FileInputStream(tanque);
@@ -297,6 +310,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }else if (e.getKeyCode() == KeyEvent.VK_SPACE && !gameState) {
             if(couldPlaceBomb()){
                 Bomb b = new Bomb("bomba.png",getBomberman().getPower());
+                b.setType(bBomberman.getBombType());
                 b.setPosition(bBomberman.getPosition());
                 this.addElement(b);
             }
