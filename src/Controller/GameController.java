@@ -14,93 +14,130 @@ import Auxiliar.Position;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
+ *
+ */
 public class GameController {
+
+    //Pause System
+    private boolean paused=false;
+
+    public boolean getGamePause(){
+        return  paused;
+    }
+    public void setGamePaused(boolean pause){
+        paused = pause;
+        System.out.println("Game State Paused "+paused);
+    }
+    /**
+     * Draw changes on screen
+     * @param e elements to draw
+     * @return void
+     */
     public void drawEverything(ArrayList<Element> e){
+        if(!paused){//pauses game
         for(int i = 0; i < e.size(); i++){
             e.get(i).autoDraw();
             //seek and destroy!
             if(e.get(i).toString().equals("Bomb")){
                 Bomb b = (Bomb) e.get(i);
                 if(b.getReadyToExplode())
-                    b.explodeIt();
+                    b.explodeIt(e);
             }
             else if(e.get(i).toString().equals("BombFire") && Draw.getGameScreen().getBomberman().getPosition().equals(e.get(i).getPosition())) {
                 Draw.getGameScreen().getBomberman().die();
             }
         }
+        }
     }
 
+    /**
+     * Update changes on elements of screen
+     * @param e elements to update
+     * @return void
+     */
     public void processEverything(ArrayList<Element> e){
         Bomberman bBomberman = (Bomberman)e.get(0);
         Element eTemp;
-        for(int i = 1; i < e.size(); i++){
-            eTemp = e.get(i);
 
-            if(eTemp.isbKill()){
-                e.remove(eTemp);
-                continue;
-            }
+        if(bBomberman.getLives()<=0){
+            System.exit(0);
+        }else{
+            for(int i = 1; i < e.size(); i++){
+                eTemp = e.get(i);
 
-            if(bBomberman.getPosition().equals(eTemp.getPosition())) {
-                if(eTemp.isbMortal()) {
-                    bBomberman.die();
-                    if(bBomberman.getLives() <= 0 ){
-                        System.exit(0);
-                    }
+                if(eTemp.isbKill()){
+                    e.remove(eTemp);
+                    continue;
+                }
 
-                }else{
-                    if(eTemp.isbTransposable()){
-                        if(eTemp.toString().equals("PowerUp")){
-                            bBomberman.powerUp();
-                            e.remove(eTemp);
-                        }else
-                        if(eTemp.toString().equals("LifeUp")){
-                            bBomberman.setLives(bBomberman.getLives()+1);
-                            e.remove(eTemp);
-                        }else
-                        if(eTemp.toString().equals("BombUp")){
-                            bBomberman.setBombs(bBomberman.getBombs()+1);
-                            e.remove(eTemp);
-                        }else
-                        if(eTemp.toString().equals("Door")){
-                            int monstersAlive = 0;
-                            for(int k = 1; k < e.size(); k++){
-                                if(e.get(k).toString().equals("Monster")){
-                                    monstersAlive++;
+                if(bBomberman.getPosition().equals(eTemp.getPosition())) {
+                    if(eTemp.isbMortal()) {
+                        bBomberman.die();
+                        //if(bBomberman.getLives() <= 0 ){
+                        //bomberman morre. O jogo deve terminar
+                        //Como terminar o o jogo?
+                        //System.exit(0);
+                        //endGameOver(e);
+                        //}
+
+                    }else{
+                        if(eTemp.isbTransposable()){
+                            if(eTemp.toString().equals("PowerUp")){
+                                bBomberman.powerUp();
+                                e.remove(eTemp);
+                            }else
+                            if(eTemp.toString().equals("LifeUp")){
+                                bBomberman.setLives(bBomberman.getLives()+1);
+                                e.remove(eTemp);
+                            }else
+                            if(eTemp.toString().equals("BombUp")){
+                                bBomberman.setBombs(bBomberman.getBombs()+1);
+                                e.remove(eTemp);
+                            }else
+                            if(eTemp.toString().equals("Door")){
+                            /*Verifica se não tem nenhum monstro no mapa,
+                            se não tem, vai pra proxima fase.
+                            */
+                                int MonstrosVivos = 0;
+                                for(int k = 1; k < e.size(); k++){
+                                    if(e.get(k).toString().equals("Monster")){
+                                        MonstrosVivos++;
+                                    }
+                                }
+                                if(MonstrosVivos == 0){/*Se não tem nenhum monstro vivo
+                                pode ir pra próxima fase, se não não faz nada*/
+
                                 }
                             }
-                            if(monstersAlive == 0){//game ends when there are no monsters to kill
-                                System.exit(0);
+                        }
+                    }
+                }
+
+                boolean randomElem = false;
+                for(int j=1; j < e.size(); j++ ){
+                    Element eTemp2 = e.get(j);
+                    if(eTemp.getPosition().equals(eTemp2.getPosition())){
+                        if((eTemp2.toString().equals("BombFire"))){
+                            if(eTemp.toString().equals("Bomb")){
+                                ((Bomb)eTemp).isReadyToExplode(true);
+                            }else {
+                                if(eTemp.toString().equals("Brick")){
+                                    randomElem = true;
+                                }
+                                e.remove(eTemp);
                             }
                         }
-                    }
-                }
-            }
-
-            boolean randomElem = false;
-            for(int j=1; j < e.size(); j++ ){
-                Element eTemp2 = e.get(j);
-                if(eTemp.getPosition().equals(eTemp2.getPosition())){
-                    if((eTemp2.toString().equals("BombFire"))){
-                        if(eTemp.toString().equals("Monster" )){
-                            e.remove(eTemp);
-                        }else if(eTemp.toString().equals("Brick")){
-                                e.remove(eTemp);
-                                Draw.getGameScreen().removeElement((eTemp2));
-                                randomElem=true;
-                        }else if(eTemp.toString().equals("Bomb")){
-                            ((Bomb)eTemp).isReadyToExplode(true);
-                        }else if(eTemp.toString().equals("PowerUp")||eTemp.toString().equals("LifeUp")||eTemp.toString().equals("BombUp")){
-                            e.remove(eTemp);
-                        }
 
                     }
                 }
-            }
-            if(randomElem){
-                Item rand =createRandomElement(eTemp.getPosition());
-                if(rand!=null)
-                    e.add(rand);
+                if(randomElem){
+                    Item rand =createRandomElement(eTemp.getPosition());
+                    if(rand!=null)
+                        e.add(rand);
+                }
             }
         }
     }

@@ -8,13 +8,13 @@ package Model;
 import Auxiliar.Consts;
 import Auxiliar.Draw;
 import Auxiliar.Position;
-import javafx.geometry.Pos;
+//import javafx.geometry.Pos;
 
 import java.util.Random;
 
 /**
- *
- * @author ICMC
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
  */
 public class Monster extends Character {
 

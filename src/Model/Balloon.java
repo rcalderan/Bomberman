@@ -8,11 +8,11 @@ import Auxiliar.Consts;
 import Auxiliar.Draw;
 
 /**
- *
- * @author maykl
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
+ * Moster that moves randomly
  */
 public class Balloon extends Element{
-   
     
     public Balloon(String sNomeImagePNG) {
         super(sNomeImagePNG);
@@ -26,6 +26,7 @@ public class Balloon extends Element{
     public void autoDraw() {
         double iRandDirection;
         iTimer++;
+        //change direction randomly
         if (iTimer == Consts.PERIOD/8) {
             iTimer = 0;
             /*row a number between 0 e 1 and move it*/

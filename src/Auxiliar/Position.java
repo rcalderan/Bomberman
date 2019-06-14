@@ -2,6 +2,11 @@ package Auxiliar;
 
 import java.io.Serializable;
 
+/**
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
+ *
+ */
 public class Position implements Serializable{
     private int line;
     private int column;
@@ -13,6 +18,11 @@ public class Position implements Serializable{
         this.setPosition(line,column);
     }
 
+    /**
+     * Set's position inside the screen space (if possible)
+     * @param line position line
+     * @param  column  popsition column
+     * @return true if the position is ok, false if not*/
     public boolean setPosition(int line, int column){
         if(line < 0 || line >= Auxiliar.Consts.RES)
             return false;

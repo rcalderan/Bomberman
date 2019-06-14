@@ -13,8 +13,9 @@ import Controller.Screen;
 import Model.Bomberman;
 
 /**
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
  *
- * @author junio
  */
 public class Draw implements Serializable {
     static Screen tScreen;

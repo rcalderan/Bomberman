@@ -13,6 +13,7 @@ package Controller;
 import Model.*;
 import Auxiliar.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -21,16 +22,14 @@ import java.util.Timer;
 import java.util.logging.*;
 import java.util.zip.*;
 /**
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
  *
- * @author junio
  */
 public class Screen extends javax.swing.JFrame implements MouseListener, KeyListener {
 
     private Bomberman bBomberman;
     private ArrayList<Element> eElements;
-    private ArrayList<Element> fase1;
-    private ArrayList<Element> fase2;
-    private ArrayList<Element> fase3;
     private GameController gameController = new GameController();
     private Graphics graphics;
     /**
@@ -48,7 +47,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
 
         eElements = new ArrayList<Element>(100);
 
-        /*Cria eElements adiciona elementos*/
+        /*Create eElements and add elements*/
         bBomberman = new Bomberman("bomberman.png");
         bBomberman.setPosition(0, 0);
         this.addElement(bBomberman);
@@ -66,7 +65,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
                         notHere.add(wall.getPosition());
                         this.addElement(wall);
                     }
-            }
+                }
         }
 
         //set Bricks
@@ -103,8 +102,6 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             addElement(monster1);
         }
 
-
-
     }
 
     /**
@@ -114,14 +111,14 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
     public Bomberman getBomberman(){
         return bBomberman;
     }
+
     /**
      * get a game element in position
      * @param pos position
      * @return Element or null if not found
      */
-
     public ArrayList<Element> getElements(Position pos){
-        ArrayList<Element> all =new ArrayList<>();
+        ArrayList<Element> all = new ArrayList<>();
         for(Element el : eElements){
             if(el.getPosition().equals(pos))
                 all.add(el);
@@ -131,7 +128,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
 
     /**
      * Check if a bomb could be placed
-     * @return true could, false if could not
+     * @return true if could, false if could not
      */
     public boolean couldPlaceBomb(){
         int bombCount=0;
@@ -164,9 +161,9 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
 
     }
 
-/*--------------------------------------------------*/
-/*------Não se preocupe com o código a seguir-------*/
-/*--------------------------------------------------*/
+    /*--------------------------------------------------*/
+    /*------Não se preocupe com o código a seguir-------*/
+    /*--------------------------------------------------*/
     public void addElement(Element aElement) {
         eElements.add(aElement);
     }
@@ -182,21 +179,32 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             return false; //out of screen
         return gameController.isValidPosition(this.eElements, p);
     }
-    
+
     public Graphics getGraphicsBuffer(){
         return graphics;
     }
-       
+
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
+        String backgroundName="green.png";
+
         /*Criamos um contexto gráfico*/
         graphics = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
+        //prints PAUSED message
+        if(gameController.getGamePause()) {
+
+            graphics.setColor(new Color(255,255,255));
+            graphics.setFont(new Font("Arial", Font.PLAIN, 50));
+            //backgroundName="black.png";
+            graphics.drawString("GAME PAUSED!", Consts.CELL_SIDE, Consts.CELL_SIDE * 5);
+        }
+        else
         /*Desenha cenário*/
         for (int i = 0; i < Consts.RES; i++) {
             for (int j = 0; j <= Consts.RES; j++) {
                 try {
-                    Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "green.png");
+                    Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + backgroundName);
                     graphics.drawImage(newImage,
                             j * Consts.CELL_SIDE, i * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
 
@@ -246,7 +254,12 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
     }
 
     public void keyPressed(KeyEvent e) {
+        boolean gameState = gameController.getGamePause();
         if (e.getKeyCode() == KeyEvent.VK_C) {
+            graphics.clearRect(Consts.CELL_SIDE,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
+            gameController.setGamePaused(!gameState);
+            paint(graphics);
+            //clearScreen();
             //this.eElements.clear();
         } else if (e.getKeyCode() == KeyEvent.VK_L) {
             /*try {
@@ -272,21 +285,23 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             } catch (IOException ex) {
                 Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
             }*/
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            // check if game is paused. BomberMan couldnd move or place bomb if its paused.
+        } else if (e.getKeyCode() == KeyEvent.VK_UP && !gameState) {
             bBomberman.moveUp();
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN && !gameState) {
             bBomberman.moveDown();
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT && !gameState) {
             bBomberman.moveLeft();
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT && !gameState) {
             bBomberman.moveRight();
-        }else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+        }else if (e.getKeyCode() == KeyEvent.VK_SPACE && !gameState) {
             if(couldPlaceBomb()){
                 Bomb b = new Bomb("bomba.png",getBomberman().getPower());
                 b.setPosition(bBomberman.getPosition());
                 this.addElement(b);
             }
         }
+        // check if game is paused. BomberMan couldnd move if its paused
         if (!this.isValidPosition(bBomberman.getPosition())) {
             bBomberman.backToLastPosition();
         }
@@ -328,12 +343,12 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 561, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 561, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 500, Short.MAX_VALUE)
         );
 
         pack();

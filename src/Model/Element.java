@@ -17,8 +17,8 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
- *
- * @author Junio
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
  */
 public abstract class Element implements Serializable {
 
@@ -67,6 +67,12 @@ public abstract class Element implements Serializable {
         this.bTransposable = bTransposable;
     }
 
+    public void setbKill(boolean bKill) {
+        this.bKill = bKill;
+    }
+
+    /**
+     * Draw element on screen*/
     public void autoDraw(){
         Draw.draw(this.iImage, pPosition.getColumn(), pPosition.getLine());
     }
@@ -120,7 +126,4 @@ public abstract class Element implements Serializable {
         }
     }
 
-    public void setbKill(boolean bKill) {
-        this.bKill = bKill;
-    }
 }

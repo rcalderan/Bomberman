@@ -8,14 +8,15 @@ package Auxiliar;
 import java.io.File;
 
 /**
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
  *
- * @author Junio
  */ 
 public class Consts {
     //game
     public static final int CELL_SIDE = 50;
     public static final int RES = 11;
-    public static final int PERIOD = 80;   
+    public static final int PERIOD = 80;
     public static final String PATH = File.separator+"imgs"+File.separator;
     public static final int TIMER = 1;
 

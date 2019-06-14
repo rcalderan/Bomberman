@@ -9,7 +9,7 @@ import Auxiliar.Consts;
 import Auxiliar.Draw;
 import Auxiliar.Position;
 import Controller.Screen;
-import sun.plugin2.gluegen.runtime.CPU;
+//import sun.plugin2.gluegen.runtime.CPU;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class Bomberman extends Character implements Serializable{
 
     private int lives;
-    private int power;
+    private int power;  //Bomb's fire range
     private int bombs;
     private int timer;
     private int invencibilityCountDown;//became invercible for a short time when die
@@ -40,13 +40,39 @@ public class Bomberman extends Character implements Serializable{
     public boolean isInvencible() {
         return invencible;
     }
-
     public void setInvencible(boolean invencible) {
         invencibilityCountDown=0;
         this.invencible = invencible;
     }
-    /* bomberman lose 1 live and reset his powers to default value
-    He must be invencible for some seconds
+    public int getNbomb(){
+        return bombs;
+    }
+    public int getBombs(){
+        return this.bombs;
+    }
+    public void setBombs(int nBomb){
+        bombs=nBomb;
+        Draw.getGameScreen().updateHUD();
+    }
+    public int getPower(){
+        return this.power;
+    }
+    public int getLives(){
+        return this.lives;
+    }
+    public void setLives(int lives) {
+        //Lose life only when not invencible
+        this.lives = lives;
+        Draw.getGameScreen().updateHUD();
+    }
+
+    /**
+     * @author Richard Calderan - 3672382
+     * @author Leticia Burla - 10294950
+     *
+     * bomberman loses 1 live and resets his powers to default value
+     * He must be invencible for some seconds
+     * @return void
      */
     public void die(){
         if(!isInvencible()) {
@@ -58,45 +84,18 @@ public class Bomberman extends Character implements Serializable{
             Draw.getGameScreen().updateHUD();
         }
     }
-    public int getNbomb(){
-        return bombs;
-    }
-    public void setBombs(int nBomb){
-        bombs=nBomb;
-        Draw.getGameScreen().updateHUD();
-    }
 
-
+    /**
+     * increases bomberman's bomb power
+     * @return void
+     */
     public void powerUp(){
         this.power = this.power + 1;
         Draw.getGameScreen().updateHUD();
     }
-    public int getPower(){
-        return this.power;
-    }
-
-    public int getLives(){
-
-        return this.lives;
-    }
-
-    /*
-    Lose life only when not invencible
-     */
-    public void setLives(int lives) {
-        this.lives = lives;
-        if(lives==0)
-            System.exit(0);
-        Draw.getGameScreen().updateHUD();
-    }
-
-    public int getBombs(){
-        return this.bombs;
-    }
 
     public void autoDraw(){
         timer+=Consts.TIMER;
-
 
         if(timer== Consts.PERIOD/8){
             timer=0;
@@ -108,9 +107,10 @@ public class Bomberman extends Character implements Serializable{
         }
         super.autoDraw();
     }
-
-
-
+    /**
+     * gests bomberman to his previus position
+     * @return void
+     */
     public void backToLastPosition(){
         this.pPosition.back();
     }

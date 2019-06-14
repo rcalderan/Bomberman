@@ -6,8 +6,8 @@
 package Model;
 
 /**
- *
- * @author ICMC
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
  */
 public class Wall extends Element {
     

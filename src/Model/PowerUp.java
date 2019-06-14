@@ -10,8 +10,11 @@ import Auxiliar.Draw;
 import java.util.ArrayList;
 
 /**
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
  *
- * @author ICMC
+ * Item for Bomberman's Power counter. It represents
+ * Bomberman's Bomb fire range
  */
 public class PowerUp extends Item {
 

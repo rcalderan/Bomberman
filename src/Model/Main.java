@@ -7,8 +7,8 @@ package Model;
 import Controller.Screen;
 
 /**
- *
- * @author junio
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
  */
 public class Main {
 
