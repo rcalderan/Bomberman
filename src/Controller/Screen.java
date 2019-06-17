@@ -32,7 +32,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
     private GameController gameController = new GameController();
     private Graphics graphics;
     /**
-     * Creates new form tabuleiro
+     * Creates the game screen
      */
     public Screen() {
         Draw.setScenario(this);
@@ -47,7 +47,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         eElements = new ArrayList<Element>(100);
 
         /*Create eElements and add elements*/
-        bBomberman = new Bomberman("bomberman.png");
+        bBomberman = new Bomberman("bomberman-d2.png");
         bBomberman.setPosition(0, 0);
         this.addElement(bBomberman);
 
@@ -88,7 +88,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             numberOfMonsters =rand.nextInt(8);
         }
         for(int i=0;i<numberOfMonsters;i++) {
-            Balloon monster1 = new Balloon("bichinho.png");
+            Monster monster1 = new Dino("dino-d.png");
             int x = rand.nextInt(Consts.RES), y = rand.nextInt(Consts.RES);
             Position aux = new Position(x, y);
             while (!isValidPosition(aux)|| notHere.contains(aux)) {
@@ -146,18 +146,18 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
      * update non static game Hud elements
      */
     public void updateHUD(){
-        //clear screen
-        graphics.clearRect(Consts.CELL_SIDE,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
-        graphics.clearRect(Consts.CELL_SIDE*3,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
-        graphics.clearRect(Consts.CELL_SIDE*5,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
         //lives
+        graphics.clearRect(Consts.CELL_SIDE,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
         Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getLives()),Consts.CELL_SIDE,  Consts.CELL_SIDE*12-5);
         //power
+        graphics.clearRect(Consts.CELL_SIDE*3,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
         Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getPower()),Consts.CELL_SIDE*3,  Consts.CELL_SIDE*12-5);
         //bombs
+        graphics.clearRect(Consts.CELL_SIDE*5,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
         Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getBombs()),Consts.CELL_SIDE*5,  Consts.CELL_SIDE*12-5);
-
-
+        //score
+        graphics.clearRect(Consts.CELL_SIDE*7,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
+        Draw.getGameScreen().graphics.drawString(Integer.toString(9999),Consts.CELL_SIDE*7,  Consts.CELL_SIDE*12-5);
     }
 
     /*--------------------------------------------------*/

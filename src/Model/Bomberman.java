@@ -62,16 +62,16 @@ public class Bomberman extends Character implements Serializable{
     }
 
     public void die(){
-
         setLives(getLives() - 1);
         setPosition(new Position(0, 0));//returns to start position
+        setLifeState(STATE.ALIVE);
         power = 1;
         bombs = 1;
         bombType = Bomb.BOMBTYPE.NORMAL;
 
         Draw.getGameScreen().updateHUD();
+        super.die();
     }
-
     /**
      * increases bomberman's bomb power
      * @return void
@@ -84,6 +84,36 @@ public class Bomberman extends Character implements Serializable{
     public void autoDraw(){
         super.autoDraw();
     }
+
+    int oscilate=1;
+    @Override
+    public void switchAppearance() {
+        String sulfix=".png",
+            directionString="";
+        int moveState =getAnimateMoveState();
+        switch (getDirection()){
+            case UP:
+                directionString="-u"+moveState;
+                break;
+            case LEFT:
+                directionString="-l"+moveState;
+                break;
+            case RIGHT:
+                directionString="-r"+moveState;
+                break;
+            case DOWN:
+                directionString="-d"+moveState;
+                break;
+        }
+        if(moveState==3)
+            oscilate=-1;
+        else if(getAnimateMoveState()==1)
+            oscilate=1;
+        setAnimateMoveState(moveState+oscilate);
+
+        changeAppearance(getCharacterName() +directionString+sulfix);
+    }
+
     /**
      * gests bomberman to his previus position
      * @return void

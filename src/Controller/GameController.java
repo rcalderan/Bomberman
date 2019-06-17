@@ -161,6 +161,12 @@ public class GameController {
             return upItem;
         }
         rand = r.nextInt(100);
+        if (rand > 0 && rand<=Consts.REMOTEBOMB_PROBABILITY) {
+            upItem =new RemoteUp("RemoteUp.png");
+            upItem.setPosition(p);
+            return upItem;
+        }
+        rand = r.nextInt(100);
         if (rand > 0 && rand<=Consts.POWERUP_PROBABILITY) {
             upItem =new PowerUp("powerUp.png");
             upItem.setPosition(p);
@@ -169,12 +175,6 @@ public class GameController {
         rand = r.nextInt(100);
         if (rand > 0 && rand<=Consts.NORMALBOMB_PROBABILITY) {
             upItem =new BombUp("bombUp.png");
-            upItem.setPosition(p);
-            return upItem;
-        }
-        rand = r.nextInt(100);
-        if (rand > 0 && rand<=Consts.TRIGGERBOMB_PROBABILITY) {
-            upItem =new RemoteUp("RemoteUp.png");
             upItem.setPosition(p);
             return upItem;
         }
@@ -197,6 +197,20 @@ public class GameController {
         }
         return true;
     }
+
+
+    /**
+     *  Get the distance between bomberman and a monster
+     * @param monster
+     * @return double
+     */
+    public double distanceBetween(Monster monster){
+        //sqrt( (x-x0)^2 + (y-y0)^2 )
+        Bomberman bomberman = Draw.getGameScreen().getBomberman();
+        return Math.sqrt(Math.pow(bomberman.getPosition().getColumn()-monster.getPosition().getColumn(),2)
+                + Math.pow(bomberman.getPosition().getLine()-monster.getPosition().getLine(),2));
+    }
+
 
 
 }

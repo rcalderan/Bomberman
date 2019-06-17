@@ -18,11 +18,13 @@ import java.util.Random;
  */
 public class Monster extends Character {
 
-    private int timer;
+    private int iTimer;
 
     public Monster(String sNomeImagePNG) {
         super(sNomeImagePNG);
-        this.timer =0;
+        this.bMortal=true;
+        this.bTransposable = true;
+        this.iTimer =0;
         changeDirection();
     }
 
@@ -67,14 +69,27 @@ public class Monster extends Character {
         }
     }
 
-    //move to a certain direction for a certain squares until cant move.
+
     public void autoDraw() {
-        int monsterPeriod=Consts.PERIOD/8;
-        timer++;
-        if (timer == monsterPeriod) {
-            timer = 0;
-            move();
+        double iRandDirection;
+        iTimer++;
+        //change direction randomly
+        if (iTimer == Consts.PERIOD/8) {
+            iTimer = 0;
+            /*row a number between 0 e 1 and move it*/
+            iRandDirection = Math.random();
+            if (iRandDirection < 0.40) {
+                this.moveDown();
+            }else if (iRandDirection > 0.40 && iRandDirection < 0.8) {
+                this.moveUp();
+            } else if (iRandDirection > 0.8 && iRandDirection <0.9) {
+                this.moveLeft();
+            } else {
+                this.moveRight();
+            }
         }
+        if (!Draw.isValidPosition(pPosition))
+            this.getPosition().back();
         super.autoDraw();
     }
 

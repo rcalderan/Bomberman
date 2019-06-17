@@ -56,15 +56,15 @@ public class Bomb extends Element implements Serializable{
     }
 
     public void autoDraw(){
-        if(type.equals(BOMBTYPE.NORMAL)){
             countDown += Consts.PERIOD;
             if(countDown == 80){
                 this.bTransposable = false;//Bug aqui...  a bomba fica instransposable. ai nao pode ser explodida pela explosao de outra bomba...
-            }else if(countDown >= Consts.TIMER_BOMB){
+            }
+
+            if(countDown >= Consts.TIMER_BOMB && type.equals(BOMBTYPE.NORMAL)){
                 this.setbKill(true);
                 isReadyToExplode(true);
             }
-        }
         super.autoDraw();
     }
 
