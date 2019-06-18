@@ -16,18 +16,28 @@ public class Character extends Element {
     private int animateDeadState;
     private int animateMoveState;
 
+    private boolean invencible;
+
     public Character(String sNomeImagePNG) {
         super(sNomeImagePNG);
         lifeState = STATE.ALIVE;
         deadTime=0;
         animateDeadState=1;
         animateMoveState=1;
+        invencible=false;
         try {
             characterName = sNomeImagePNG.substring(0,sNomeImagePNG.indexOf("-d2.png"));
         }catch (Exception e){
             characterName = sNomeImagePNG.substring(0,sNomeImagePNG.indexOf("-d.png"));
         }
         direction=Consts.DIRECTION.DOWN;
+    }
+
+    public boolean isInvencible(){
+        return invencible;
+    }
+    public void setInvencible(boolean isInvencible){
+        invencible=isInvencible;
     }
 
     public String getCharacterName() {
@@ -95,7 +105,10 @@ public class Character extends Element {
             if(animateDeadState>7){
                 animateDeadState=1;
                 lifeState=STATE.ALIVE;
-                changeAppearance(characterName+"-d.png");
+                changeAppearance(characterName+"-d2.png");//only bomberman should go back to life
+                setInvencible(false);
+                setPosition(0,0);
+
             }
         }
     }

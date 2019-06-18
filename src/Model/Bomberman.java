@@ -62,15 +62,17 @@ public class Bomberman extends Character implements Serializable{
     }
 
     public void die(){
-        setLives(getLives() - 1);
-        setPosition(new Position(0, 0));//returns to start position
-        setLifeState(STATE.ALIVE);
-        power = 1;
-        bombs = 1;
-        bombType = Bomb.BOMBTYPE.NORMAL;
+        if(!isInvencible()) {
+            setInvencible(true);
+            setLives(getLives() - 1);
+            setLifeState(STATE.ALIVE);
+            power = 1;
+            bombs = 1;
+            bombType = Bomb.BOMBTYPE.NORMAL;
 
-        Draw.getGameScreen().updateHUD();
-        super.die();
+            Draw.getGameScreen().updateHUD();
+            super.die();
+        }
     }
     /**
      * increases bomberman's bomb power

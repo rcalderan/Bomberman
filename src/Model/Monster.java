@@ -8,7 +8,6 @@ package Model;
 import Auxiliar.Consts;
 import Auxiliar.Draw;
 import Auxiliar.Position;
-//import javafx.geometry.Pos;
 
 import java.util.Random;
 
