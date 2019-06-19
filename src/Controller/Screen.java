@@ -82,13 +82,11 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }
 
         //create monsters
+
         Random rand =new Random();
-        int numberOfMonsters=rand.nextInt(8);
-        while( numberOfMonsters<4){
-            numberOfMonsters =rand.nextInt(8);
-        }
+        int numberOfMonsters =rand.nextInt(8+1)+3;
         for(int i=0;i<numberOfMonsters;i++) {
-            Monster monster1 = new Dino("dino-d.png");
+            Monster monster1 = createRandomMonster();
             int x = rand.nextInt(Consts.RES), y = rand.nextInt(Consts.RES);
             Position aux = new Position(x, y);
             while (!isValidPosition(aux)|| notHere.contains(aux)) {
@@ -101,6 +99,19 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             addElement(monster1);
         }
 
+    }
+
+    private Monster createRandomMonster(){
+
+        Random rand =new Random();
+        switch (rand.nextInt(3)){
+            case 0:
+                return new Dino();
+            case 1:
+                return new Coin();
+                default:
+                    return new Balloon();
+        }
     }
 
     /**
@@ -213,8 +224,8 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             }
         }
         if (!this.eElements.isEmpty()) {
-            this.gameController.drawEverything(eElements);
-            this.gameController.processEverything(eElements);
+            this.gameController.drawEverything(eElements,0);
+            this.gameController.processEverything(eElements,0);
         }
         //create game hud: static
         try{
@@ -260,7 +271,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             paint(graphics);
             //clearScreen();
             //this.eElements.clear();
-        }if (e.getKeyCode() == KeyEvent.VK_C) {
+        }else if (e.getKeyCode() == KeyEvent.VK_C) {
             for(Element element : eElements){
                 if(element.toString().equals("Bomb")){
                     var b = (Bomb)element;
@@ -275,16 +286,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }
 
         else if (e.getKeyCode() == KeyEvent.VK_L) {
-            /*try {
-                File tanque = new File("c:\\temp\\POO.zip");
-                FileInputStream canoOut = new FileInputStream(tanque);
-                GZIPInputStream compactador = new GZIPInputStream(canoOut);
-                ObjectInputStream serializador = new ObjectInputStream(compactador);
-                this.eElements = (ArrayList<Element>)serializador.readObject();
-                serializador.close();
-            } catch (Exception ex) {
-                Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+
         } else if (e.getKeyCode() == KeyEvent.VK_S) {
             /*try {
                 File tanque = new File("c:\\temp\\POO.zip");

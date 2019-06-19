@@ -62,7 +62,6 @@ public class Bomb extends Element implements Serializable{
             }
 
             if(countDown >= Consts.TIMER_BOMB && type.equals(BOMBTYPE.NORMAL)){
-                this.setbKill(true);
                 isReadyToExplode(true);
             }
         super.autoDraw();
@@ -93,7 +92,6 @@ public class Bomb extends Element implements Serializable{
      * @return void
      */
     public void explodeIt(ArrayList<Element> elements){
-        setbKill(true);
         /*explosionLimit is the flag that informs if the fire in each direction
         stops or keeps moving. Each index represents a direction
         0=Left / 1=Right / 2=Up / 3=Down. if explosionLimit is 'false', than

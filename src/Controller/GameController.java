@@ -10,6 +10,7 @@ import Auxiliar.Consts;
 import Auxiliar.Draw;
 import Model.*;
 import Auxiliar.Position;
+import Model.Character;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -36,20 +37,21 @@ public class GameController {
      * @param e elements to draw
      * @return void
      */
-    public void drawEverything(ArrayList<Element> e){
+    public void drawEverything(ArrayList<Element> e,int startIndex){
         if(!paused){//pauses game
-        for(int i = 0; i < e.size(); i++){
-            e.get(i).autoDraw();
-            //seek and destroy!
-            if(e.get(i).toString().equals("Bomb")){
-                Bomb b = (Bomb) e.get(i);
-                if(b.getReadyToExplode())
-                    b.explodeIt(e);
+            for(int i = startIndex; i < e.size(); i++){
+                e.get(i).autoDraw();
+                //seek and destroy!
+                if(e.get(i).toString().equals("Bomb")){
+                    Bomb b = (Bomb) e.get(i);
+                    if(b.getReadyToExplode()) {
+                        b.explodeIt(e);
+                        Draw.getGameScreen().removeElement(b);
+                        drawEverything(e,i+1);
+                        return;
+                    }
+                }
             }
-            else if(e.get(i).toString().equals("BombFire") && Draw.getGameScreen().getBomberman().getPosition().equals(e.get(i).getPosition())) {
-                Draw.getGameScreen().getBomberman().die();
-            }
-        }
         }
     }
 
@@ -58,19 +60,31 @@ public class GameController {
      * @param e elements to update
      * @return void
      */
-    public void processEverything(ArrayList<Element> e){
+    public void processEverything(ArrayList<Element> e, int startIndex){
         Bomberman bBomberman = (Bomberman)e.get(0);
         Element eTemp;
-
         if(bBomberman.getLives()<=0){
             System.exit(0);
         }else{
-            for(int i = 1; i < e.size(); i++){
+            if (startIndex==0)
+                startIndex++;
+            for(int i = startIndex; i < e.size(); i++){
                 eTemp = e.get(i);
 
-                if(eTemp.isbKill()){
-                    e.remove(eTemp);
-                    continue;
+                String s = e.get(i).toString();
+                if(e.get(i).toString().equals("BombFire")){//&& Draw.getGameScreen().getBomberman().getPosition().equals(e.get(i).getPosition())) {
+                     BombFire fire = (BombFire)e.get(i);
+                    if(!fire.isBurning()){
+                        e.remove(fire);
+                        processEverything(e,i+1);
+                        return;
+                    }
+                    else{
+                        if(bBomberman.getPosition().equals(fire.getPosition()))
+                            bBomberman.die();
+
+                    }
+
                 }
 
                 if(bBomberman.getPosition().equals(eTemp.getPosition())) {
@@ -88,18 +102,26 @@ public class GameController {
                             if(eTemp.toString().equals("PowerUp")){
                                 bBomberman.powerUp();
                                 e.remove(eTemp);
+                                processEverything(e,i+1);
+                                return;
                             }else
                             if(eTemp.toString().equals("LifeUp")){
                                 bBomberman.setLives(bBomberman.getLives()+1);
                                 e.remove(eTemp);
+                                processEverything(e,i+1);
+                                return;
                             }else
                             if(eTemp.toString().equals("BombUp")){
                                 bBomberman.setBombs(bBomberman.getBombs()+1);
                                 e.remove(eTemp);
+                                processEverything(e,i+1);
+                                return;
                             }else
                                 if(eTemp.toString().equals("RemoteUp")){
                                 bBomberman.setBombType(Bomb.BOMBTYPE.REMOTE);
                                 e.remove(eTemp);
+                                    processEverything(e,i+1);
+                                    return;
                             }else
                             if(eTemp.toString().equals("Door")){
                             /*Verifica se não tem nenhum monstro no mapa,
@@ -129,18 +151,17 @@ public class GameController {
                                 ((Bomb)eTemp).isReadyToExplode(true);
                             }else {
                                 if(eTemp.toString().equals("Brick")){
-                                    randomElem = true;
+                                    Item rand =createRandomElement(eTemp.getPosition());
+                                    if(rand!=null)
+                                        e.add(rand);
                                 }
                                 e.remove(eTemp);
+                                processEverything(e,i+1);
+                                return;
                             }
                         }
 
                     }
-                }
-                if(randomElem){
-                    Item rand =createRandomElement(eTemp.getPosition());
-                    if(rand!=null)
-                        e.add(rand);
                 }
             }
         }

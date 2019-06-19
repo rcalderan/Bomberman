@@ -34,7 +34,7 @@ public class Position implements Serializable{
         
         lastColumn = this.column;
         this.column = column;
-        
+
         return true;
     }
     public boolean setPosition(Position p){

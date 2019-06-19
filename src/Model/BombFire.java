@@ -5,14 +5,15 @@ package Model;
  */
 
 import Auxiliar.Consts;
-import Auxiliar.Draw;
 
 public class BombFire extends Element{
     private int iCountTempo;
+    private boolean burning;
 
     public BombFire(String sNomeImagePNG) {
         super(sNomeImagePNG);
         bMortal=true;
+        setBurning(true);
         iCountTempo=0;
     }
 
@@ -21,9 +22,16 @@ public class BombFire extends Element{
         super.autoDraw();
         iCountTempo++;
         if(iCountTempo >= Consts.TIMER){
-            this.setbKill(true);
-            //Draw.getGameScreen().removeElement(this);
+            burning=false;
         }
 
+    }
+
+    public boolean isBurning() {
+        return burning;
+    }
+
+    public void setBurning(boolean burning) {
+        this.burning = burning;
     }
 }
