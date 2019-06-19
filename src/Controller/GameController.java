@@ -59,26 +59,21 @@ public class GameController {
      * @param e elements to update
      * @return void
      */
-    public void processEverything(ArrayList<Element> e){
+    public void processEverything(ArrayList<Element> e, int startIndex){
         Bomberman bBomberman = (Bomberman)e.get(0);
         Element eTemp;
-
         if(bBomberman.getLives()<=0){
             System.exit(0);
         }else{
-            for(int i = 1; i < e.size(); i++){
+            if (startIndex==0)
+                startIndex++;
+            for(int i = startIndex; i < e.size(); i++){
                 eTemp = e.get(i);
 
                 if(eTemp.isbKill()){
                     e.remove(eTemp);
-                    continue;
-                }
-                if(eTemp instanceof Pea){
-                    Pea pea = (Pea)eTemp;
-                    if(pea.getLifeState().equals(Character.STATE.DEAD)){
-                        e.remove(eTemp);
-                        continue;
-                    }
+                    processEverything(e,i+1);
+                    return;
                 }
 
                 if(bBomberman.getPosition().equals(eTemp.getPosition())) {
@@ -96,18 +91,26 @@ public class GameController {
                             if(eTemp.toString().equals("PowerUp")){
                                 bBomberman.powerUp();
                                 e.remove(eTemp);
+                                processEverything(e,i+1);
+                                return;
                             }else
                             if(eTemp.toString().equals("LifeUp")){
                                 bBomberman.setLives(bBomberman.getLives()+1);
                                 e.remove(eTemp);
+                                processEverything(e,i+1);
+                                return;
                             }else
                             if(eTemp.toString().equals("BombUp")){
                                 bBomberman.setBombs(bBomberman.getBombs()+1);
                                 e.remove(eTemp);
+                                processEverything(e,i+1);
+                                return;
                             }else
                                 if(eTemp.toString().equals("RemoteUp")){
                                 bBomberman.setBombType(Bomb.BOMBTYPE.REMOTE);
                                 e.remove(eTemp);
+                                    processEverything(e,i+1);
+                                    return;
                             }else
                             if(eTemp.toString().equals("Door")){
                             /*Verifica se não tem nenhum monstro no mapa,
@@ -149,6 +152,8 @@ public class GameController {
                     Item rand =createRandomElement(eTemp.getPosition());
                     if(rand!=null)
                         e.add(rand);
+                    processEverything(e,i+1);
+                    return;
                 }
             }
         }

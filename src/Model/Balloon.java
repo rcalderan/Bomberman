@@ -14,8 +14,18 @@ import Auxiliar.Draw;
  */
 public class Balloon extends Monster{
     
-    public Balloon(String sNomeImagePNG) {
-        super(sNomeImagePNG);
+    public Balloon() {
+        super("bichinho-d.png");
+    }
+
+    /**
+     * This monster cant shoot
+     */
+    public void shoot(){}
+
+
+    public void switchAppearance() {
+        changeAppearance(getCharacterName()+"-d.png");
     }
 
     public String toString(){

@@ -44,30 +44,11 @@ public class Monster extends Character {
         }
         setDirection(nextDirection);
     }
-
-    private void move(){
-        switch (getDirection()){
-            case DOWN:
-                moveDown();
-                break;
-            case UP:
-                moveUp();
-                break;
-            case LEFT:
-                moveLeft();
-                break;
-            case RIGHT:
-                moveRight();
-                break;
-        }
-
-        Position next = getPosition();
-        if (!Draw.isValidPosition(next)) {
-            this.getPosition().back();
-            changeDirection();
-        }
+    public void shoot(){
+        Pea pea =new Pea("pea-d.png",getDirection());
+        pea.setPosition(getPosition());
+        Draw.getGameScreen().addElement(pea);
     }
-
 
     public void autoDraw() {
         double iRandDirection;
@@ -89,7 +70,7 @@ public class Monster extends Character {
         }
         if (!Draw.isValidPosition(pPosition))
             this.getPosition().back();
-
+        super.autoDraw();
     }
 
 }
