@@ -89,7 +89,7 @@ public class Monster extends Character {
         }
         if (!Draw.isValidPosition(pPosition))
             this.getPosition().back();
-        super.autoDraw();
+
     }
 
 }

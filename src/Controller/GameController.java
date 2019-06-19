@@ -10,6 +10,7 @@ import Auxiliar.Consts;
 import Auxiliar.Draw;
 import Model.*;
 import Auxiliar.Position;
+import Model.Character;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -71,6 +72,13 @@ public class GameController {
                 if(eTemp.isbKill()){
                     e.remove(eTemp);
                     continue;
+                }
+                if(eTemp instanceof Pea){
+                    Pea pea = (Pea)eTemp;
+                    if(pea.getLifeState().equals(Character.STATE.DEAD)){
+                        e.remove(eTemp);
+                        continue;
+                    }
                 }
 
                 if(bBomberman.getPosition().equals(eTemp.getPosition())) {

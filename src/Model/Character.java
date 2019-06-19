@@ -13,6 +13,7 @@ public class Character extends Element {
     private String characterName;
     private int deadTime;
     private STATE lifeState;
+
     private int animateDeadState;
     private int animateMoveState;
 
@@ -75,7 +76,7 @@ public class Character extends Element {
         String sulfix=".png",
                 directionString="";
 
-        switch (direction){
+        switch (getDirection()){
             case UP:
                 directionString="-u";
                 break;

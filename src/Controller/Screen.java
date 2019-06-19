@@ -31,6 +31,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
     private ArrayList<Element> eElements;
     private GameController gameController = new GameController();
     private Graphics graphics;
+    private Coin coin;
     /**
      * Creates the game screen
      */
@@ -88,7 +89,8 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             numberOfMonsters =rand.nextInt(8);
         }
         for(int i=0;i<numberOfMonsters;i++) {
-            Monster monster1 = new Dino("dino-d.png");
+            Monster monster1 = new Coin("coin-d.png");
+            coin=(Coin) monster1;
             int x = rand.nextInt(Consts.RES), y = rand.nextInt(Consts.RES);
             Position aux = new Position(x, y);
             while (!isValidPosition(aux)|| notHere.contains(aux)) {
@@ -260,7 +262,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             paint(graphics);
             //clearScreen();
             //this.eElements.clear();
-        }if (e.getKeyCode() == KeyEvent.VK_C) {
+        }else if (e.getKeyCode() == KeyEvent.VK_C) {
             for(Element element : eElements){
                 if(element.toString().equals("Bomb")){
                     var b = (Bomb)element;
@@ -275,16 +277,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }
 
         else if (e.getKeyCode() == KeyEvent.VK_L) {
-            /*try {
-                File tanque = new File("c:\\temp\\POO.zip");
-                FileInputStream canoOut = new FileInputStream(tanque);
-                GZIPInputStream compactador = new GZIPInputStream(canoOut);
-                ObjectInputStream serializador = new ObjectInputStream(compactador);
-                this.eElements = (ArrayList<Element>)serializador.readObject();
-                serializador.close();
-            } catch (Exception ex) {
-                Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            coin.shootPea();
         } else if (e.getKeyCode() == KeyEvent.VK_S) {
             /*try {
                 File tanque = new File("c:\\temp\\POO.zip");

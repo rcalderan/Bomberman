@@ -14,6 +14,12 @@ public class Coin extends Monster {
         animateIddleState=1;
     }
 
+    public void shootPea(){
+
+        Pea pea =new Pea("pea-d.png",getDirection());
+        pea.setPosition(getPosition());
+        Draw.getGameScreen().addElement(pea);
+    }
 
     public void autoDraw() {
         double iRandDirection;
@@ -32,7 +38,9 @@ public class Coin extends Monster {
             } else {
                 this.moveRight();
             }
+
         }
+
 
         if (iTimer > Consts.PERIOD/40) {
             changeAppearance(getCharacterName()+animateIddleState+".png");
@@ -44,6 +52,6 @@ public class Coin extends Monster {
         if (!Draw.isValidPosition(pPosition))
             this.getPosition().back();
 
-        super.autoDraw();
+        Draw.draw(this.iImage, pPosition.getColumn(), pPosition.getLine());
     }
 }
