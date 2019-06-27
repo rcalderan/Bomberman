@@ -64,12 +64,6 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         bBomberman = new Bomberman("bomberman-d2.png");
         bBomberman.setPosition(0, 0);
 
-        //wont place monsters in "notHere" positions
-        ArrayList<Position> notHere = new ArrayList<>();
-        for (int i=0;i< gameController.getCurrentStage().getNumberOfElements();i++)
-            notHere.add(gameController.getCurrentStage().getElement(i).getPosition());
-
-
         //create monsters -
         //Stage 1 - only Balloons
         //Stage 2 - Ballons and Coins
