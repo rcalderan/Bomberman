@@ -11,8 +11,8 @@ package Model;
  */
 public class Wall extends Element {
     
-    public Wall(String sImageNamePNG) {
-        super(sImageNamePNG);
+    public Wall() {
+        super("wall.png");
         this.bTransposable = false;
     }
     

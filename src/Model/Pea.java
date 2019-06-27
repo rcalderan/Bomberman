@@ -9,8 +9,8 @@ import Auxiliar.Draw;
 public class Pea extends Character {
     private int lifeTime;
     private int timer;
-    public Pea(String sNomeImagePNG, Consts.DIRECTION direction) {
-        super(sNomeImagePNG);
+    public Pea( Consts.DIRECTION direction) {
+        super("pea.png");
         this.setDirection(direction);
         timer=0;
         bMortal=true;

@@ -27,91 +27,92 @@ import java.util.logging.*;
  */
 public class Screen extends javax.swing.JFrame implements MouseListener, KeyListener {
 
+    private String gameMessange;
     private Bomberman bBomberman;
-    private ArrayList<Element> eElements;
-    private GameController gameController = new GameController();
+    //private ArrayList<Element> eElements;
+    private GameController gameController;
     private Graphics graphics;
+    private ArrayList<Stage> gameStages;
     /**
      * Creates the game screen
      */
     public Screen() {
+        gameStages = new ArrayList<>();
+        gameMessange = "Stage 1";
+        //create Stages
+        Stage stage1 = new Stage("Stage 1");
+        Stage stage2 = new Stage("Stage 2");
+        Stage stage3 = new Stage("Stage 3");
+
+        stage1.setNextStage(stage2);
+        stage2.setNextStage(stage3);
+        //stage3 next is null. It means the player finished this game
+
+        //instanciate the GameController1
+        gameController = new GameController(stage1);
+
+
         Draw.setScenario(this);
         initComponents();
-        this.addMouseListener(this); /*mouse*/
-
-        this.addKeyListener(this);   /*teclado*/
-        /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
+        // create game events
+        this.addMouseListener(this);
+        this.addKeyListener(this);
+        // set screen dimension
         this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.CELL_SIDE+Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
-
-        eElements = new ArrayList<Element>(100);
 
         /*Create eElements and add elements*/
         bBomberman = new Bomberman("bomberman-d2.png");
         bBomberman.setPosition(0, 0);
-        this.addElement(bBomberman);
 
         //wont place monsters in "notHere" positions
         ArrayList<Position> notHere = new ArrayList<>();
+        for (int i=0;i< gameController.getCurrentStage().getNumberOfElements();i++)
+            notHere.add(gameController.getCurrentStage().getElement(i).getPosition());
 
-        // set indestrutible wall
-        for(int i=0;i<Consts.RES;i++){
-            if(i%2!=0)
-                for (int j=0;j<Consts.RES;j++){
-                    if(j%2!=0) {
-                        Wall wall = new Wall("wall.png");
-                        wall.setPosition(i, j);
-                        notHere.add(wall.getPosition());
-                        this.addElement(wall);
-                    }
-                }
-        }
 
-        //set Bricks
-        for(int i = 0; i < (Consts.RES);i++){
-            for(int j = 0; j < (Consts.RES); j++){
-                if(Math.random() < 0.35 && (i != 0 && j!= 0)){
-                    if((i%2 == 0 || j%2 == 0) && (i != 0 && j != 10)){
-                        Brick p = new Brick("brick.png");
-                        p.setPosition(i,j);
-                        notHere.add(p.getPosition());
-                        this.addElement(p);
-                    }
-                }
-            }
-        }
-
-        //create monsters
-
+        //create monsters -
+        //Stage 1 - only Balloons
+        //Stage 2 - Ballons and Coins
+        //Stage 3 - Ballons, Coins and Dinos
         Random rand =new Random();
-        int numberOfMonsters =rand.nextInt(8+1)+3;
+        int numberOfMonsters =rand.nextInt(8+1)+4;
         for(int i=0;i<numberOfMonsters;i++) {
-            Monster monster1 = createRandomMonster();
-            int x = rand.nextInt(Consts.RES), y = rand.nextInt(Consts.RES);
-            Position aux = new Position(x, y);
-            while (!isValidPosition(aux)|| notHere.contains(aux)) {
+            Monster monster;
+            do{//add for stage 1
+                monster = Stage.createRandomMonster();
+                int x = rand.nextInt(Consts.RES), y = rand.nextInt(Consts.RES);
+                Position aux = new Position(x, y);
                 x = rand.nextInt(Consts.RES);
                 y = rand.nextInt(Consts.RES);
-                aux=new Position(x,y);
+                monster.setPosition(x, y);
+            } while (!(monster instanceof Balloon));
+            stage1.addElement(monster);
+            int r = rand.nextInt(2)+1;
+            switch (r){
+                case 2:
+                    monster=new Coin();
+                    break;
+                    default:
+                        monster=new Balloon();
+                        break;
             }
-            monster1.setPosition(x, y);
-            notHere.add(monster1.getPosition());
-            addElement(monster1);
+            //monsters for stage2
+            int x = rand.nextInt(Consts.RES);
+            int y = rand.nextInt(Consts.RES);
+            monster.setPosition(x,y);
+            stage2.addElement(monster);
+            monster = Stage.createRandomMonster();
+             x = rand.nextInt(Consts.RES);
+             y = rand.nextInt(Consts.RES);
+            Position aux = new Position(x, y);
+            x = rand.nextInt(Consts.RES);
+            y = rand.nextInt(Consts.RES);
+            monster.setPosition(x, y);
+            stage3.addElement(monster);
+
         }
 
-    }
-
-    private Monster createRandomMonster(){
-
-        Random rand =new Random();
-        switch (rand.nextInt(3)){
-            case 0:
-                return new Dino();
-            case 1:
-                return new Coin();
-                default:
-                    return new Balloon();
-        }
     }
 
     /**
@@ -122,28 +123,16 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         return bBomberman;
     }
 
-    /**
-     * get a game element in position
-     * @param pos position
-     * @return Element or null if not found
-     */
-    public ArrayList<Element> getElements(Position pos){
-        ArrayList<Element> all = new ArrayList<>();
-        for(Element el : eElements){
-            if(el.getPosition().equals(pos))
-                all.add(el);
-        }
-        return all;
-    }
-
+    public String getGameMessange(){return gameMessange;}
+    public void setGameMessange(String msg){gameMessange=msg;}
     /**
      * Check if a bomb could be placed
      * @return true if could, false if could not
      */
     public boolean couldPlaceBomb(){
         int bombCount=0;
-        for(Element el : eElements){
-            if(el.toString().equals("Bomb"))
+        for(int i=0; i<gameController.getCurrentStage().getNumberOfElements();i++){
+            if(gameController.getCurrentStage().getElement(i).toString().equals("Bomb"))
             {
                 bombCount++;
                 if(bombCount>=bBomberman.getBombs())
@@ -167,27 +156,28 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         graphics.clearRect(Consts.CELL_SIDE*5,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
         Draw.getGameScreen().graphics.drawString(Integer.toString(bBomberman.getBombs()),Consts.CELL_SIDE*5,  Consts.CELL_SIDE*12-5);
         //score
-        graphics.clearRect(Consts.CELL_SIDE*7,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
-        Draw.getGameScreen().graphics.drawString(Integer.toString(9999),Consts.CELL_SIDE*7,  Consts.CELL_SIDE*12-5);
+        graphics.clearRect(Consts.CELL_SIDE*7,  Consts.CELL_SIDE*11,Consts.CELL_SIDE*4,Consts.CELL_SIDE);
+        Draw.getGameScreen().graphics.drawString(Integer.toString(gameController.getCurrentStage().getScore()),Consts.CELL_SIDE*7,  Consts.CELL_SIDE*12-5);
     }
+
 
     /*--------------------------------------------------*/
     /*------Não se preocupe com o código a seguir-------*/
     /*--------------------------------------------------*/
     public void addElement(Element aElement) {
-        eElements.add(aElement);
+        gameController.getCurrentStage().addElement(aElement);
     }
-
+    /**
     public void removeElement(Element aElement) {
         eElements.remove(aElement);
     }
-
+    */
     public boolean isValidPosition(Position p){
         if(p.getColumn()>=Consts.RES)
             return false; //out of screen
         if(p.getLine()>=Consts.RES)
             return false; //out of screen
-        return gameController.isValidPosition(this.eElements, p);
+        return gameController.isValidPosition(p);
     }
 
     public Graphics getGraphicsBuffer(){
@@ -207,7 +197,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             graphics.setColor(new Color(255,255,255));
             graphics.setFont(new Font("Arial", Font.PLAIN, 50));
             //backgroundName="black.png";
-            graphics.drawString("GAME PAUSED!", Consts.CELL_SIDE, Consts.CELL_SIDE * 5);
+            graphics.drawString(getGameMessange(), Consts.CELL_SIDE, Consts.CELL_SIDE * 5);
         }
         else
         /*Desenha cenário*/
@@ -223,9 +213,9 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
                 }
             }
         }
-        if (!this.eElements.isEmpty()) {
-            this.gameController.drawEverything(eElements,0);
-            this.gameController.processEverything(eElements,0);
+        if (this.gameController.getCurrentStage().getNumberOfElements() !=0) {
+            this.gameController.drawEverything();
+            this.gameController.processEverything();
         }
         //create game hud: static
         try{
@@ -239,6 +229,9 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
 
             newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "bombUp.png");
             graphics.drawImage(newImage,Consts.CELL_SIDE*4,  Consts.CELL_SIDE*11, null);
+
+            newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "score.png");
+            graphics.drawImage(newImage,Consts.CELL_SIDE*6,  Consts.CELL_SIDE*11, null);
 
 
         }catch (IOException er){
@@ -265,18 +258,21 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
 
     public void keyPressed(KeyEvent e) {
         boolean gameState = gameController.getGamePause();
-        if (e.getKeyCode() == KeyEvent.VK_P) {
+         if (e.getKeyCode() == KeyEvent.VK_P) {
             graphics.clearRect(Consts.CELL_SIDE,  Consts.CELL_SIDE*11,Consts.CELL_SIDE,Consts.CELL_SIDE);
+            setGameMessange("Game Paused!");
             gameController.setGamePaused(!gameState);
             paint(graphics);
             //clearScreen();
             //this.eElements.clear();
-        }else if (e.getKeyCode() == KeyEvent.VK_C) {
-            for(Element element : eElements){
-                if(element.toString().equals("Bomb")){
-                    var b = (Bomb)element;
+        }if (e.getKeyCode() == KeyEvent.VK_C) {
+            for(int i=0; i<gameController.getCurrentStage().getNumberOfElements();i++){
+                Element el =gameController.getCurrentStage().getElement(i);
+                if(el.toString().equals("Bomb")){
+                    var b = (Bomb)el;
                     if(b.getType().equals(Bomb.BOMBTYPE.REMOTE))
                     {
+                        b.setbKill(true);
                         b.isReadyToExplode(true);
                         break;
                     }
@@ -285,8 +281,8 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             //explode imediattly the first trigger bomb placed
         }
 
-        else if (e.getKeyCode() == KeyEvent.VK_L) {
-
+        else if (e.getKeyCode() == KeyEvent.VK_K) {
+            gameController.killAllMonsters();
         } else if (e.getKeyCode() == KeyEvent.VK_S) {
             /*try {
                 File tanque = new File("c:\\temp\\POO.zip");
@@ -314,7 +310,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
                 Bomb b = new Bomb("bomba.png",getBomberman().getPower());
                 b.setType(bBomberman.getBombType());
                 b.setPosition(bBomberman.getPosition());
-                this.addElement(b);
+                gameController.getCurrentStage().addElement(b);
             }
         }
         // check if game is paused. BomberMan couldnd move if its paused

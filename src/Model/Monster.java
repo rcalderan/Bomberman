@@ -7,8 +7,8 @@ package Model;
 
 import Auxiliar.Consts;
 import Auxiliar.Draw;
-import Auxiliar.Position;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -18,14 +18,24 @@ import java.util.Random;
 public class Monster extends Character {
 
     private int iTimer;
+    private boolean shooter;
+    protected int points;
 
     public Monster(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bMortal=true;
         this.bTransposable = true;
         this.iTimer =0;
+        this.shooter=false;
+        this.points=100;
         changeDirection();
     }
+
+    public int getPoints(){return points;}
+
+    public boolean isShooter(){return shooter;}
+
+    public void setShooter(boolean isShooter){this.shooter = isShooter;}
 
     //Randonly change moster's direction
     private void changeDirection(){
@@ -44,17 +54,23 @@ public class Monster extends Character {
         }
         setDirection(nextDirection);
     }
+
+    /**
+     *  shot a pea from this position in this direction
+     */
     public void shoot(){
-        Pea pea =new Pea("pea-d.png",getDirection());
+        Pea pea =new Pea(getDirection());
         pea.setPosition(getPosition());
         Draw.getGameScreen().addElement(pea);
     }
 
     public void autoDraw() {
+
+
         double iRandDirection;
         iTimer++;
         //change direction randomly
-        if (iTimer == Consts.PERIOD/8) {
+        if (iTimer > Consts.PERIOD/6 && getLifeState().equals(STATE.ALIVE)) {
             iTimer = 0;
             /*row a number between 0 e 1 and move it*/
             iRandDirection = Math.random();
@@ -70,6 +86,7 @@ public class Monster extends Character {
         }
         if (!Draw.isValidPosition(pPosition))
             this.getPosition().back();
+
         super.autoDraw();
     }
 

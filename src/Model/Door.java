@@ -9,10 +9,10 @@ package Model;
  * @author Richard Calderan - 3672382
  * @author Leticia Burla - 10294950
  */
-public class Door extends Element {
+public class Door extends Item {
 
-    public Door(String sImageNamePNG) {
-        super(sImageNamePNG);
+    public Door() {
+        super("door.png");
     }
     
 }

@@ -13,9 +13,10 @@ import Auxiliar.Draw;
  * Moster that moves randomly
  */
 public class Balloon extends Monster{
-    
+    private int iTimer;
     public Balloon() {
-        super("bichinho-d.png");
+        super("balloon-d.png");
+        iTimer=0;
     }
 
     /**
@@ -23,9 +24,20 @@ public class Balloon extends Monster{
      */
     public void shoot(){}
 
+    public void autoDraw(){
+        if(lifeState.equals(STATE.DYING)){
+            deadTime++;
+            if (deadTime > Consts.PERIOD/40) {
+                changeAppearance(getCharacterName()+"-death"+animateDeadState+".png");
+                Draw.draw(this.iImage, pPosition.getColumn(), pPosition.getLine());
+                animateDeadState++;
+                deadTime=0;
+            }
+        }
+        iTimer++;
+        super.autoDraw();
 
-    public void switchAppearance() {
-        changeAppearance(getCharacterName()+"-d.png");
+        //Draw.draw(this.iImage, pPosition.getColumn(), pPosition.getLine());
     }
 
     public String toString(){

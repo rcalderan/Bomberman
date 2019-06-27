@@ -58,114 +58,14 @@ public class Bomb extends Element implements Serializable{
     public void autoDraw(){
             countDown += Consts.PERIOD;
             if(countDown == 80){
-                this.bTransposable = false;//Bug aqui...  a bomba fica instransposable. ai nao pode ser explodida pela explosao de outra bomba...
+                this.bTransposable = false;
             }
 
             if(countDown >= Consts.TIMER_BOMB && type.equals(BOMBTYPE.NORMAL)){
+                this.setbKill(true);
                 isReadyToExplode(true);
             }
         super.autoDraw();
-    }
-
-    /**
-     * Check if the element in position p
-     * is explosable or not (Walls are not explosable)
-     * @param elements list of all elements
-     * @param p position of element to check
-     * @return true if it is, false if isn't
-     */
-    public boolean isExplosable(ArrayList<Element> elements, Position p) {
-        for (Element e : elements) {
-            if (e.getPosition().equals(p)) {
-                if (e.toString().equals("Wall")) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Execute explosion: turn bomb into fire
-     * and place it in the right spots
-     * @param elements list of all elements
-     * @return void
-     */
-    public void explodeIt(ArrayList<Element> elements){
-        /*explosionLimit is the flag that informs if the fire in each direction
-        stops or keeps moving. Each index represents a direction
-        0=Left / 1=Right / 2=Up / 3=Down. if explosionLimit is 'false', than
-        there is no more fire in that direction. 'true' means the oposite
-        * */
-        boolean[] explosionLimit = new boolean[]{true, true, true, true};
-        BombFire f = new BombFire("explosion.png");
-
-        f.setPosition(getPosition());
-        Draw.getGameScreen().addElement(f);
-        for (int i = 1; i <= getPower(); i++) {
-            String expName;
-
-            if (i == getPower())
-                expName = "explosion-L.png";
-            else
-                expName = "explosion-horizontal.png";
-            BombFire fb = new BombFire(expName);
-            if (explosionLimit[0] && fb.setPosition(getPosition().getLine(), getPosition().getColumn() - i)) {
-                Position p = new Position(getPosition().getLine(), getPosition().getColumn() - i);
-                if (isExplosable(elements, p)) {
-                    explosionLimit[0] = Draw.getGameScreen().isValidPosition(fb.getPosition());
-                    Draw.getGameScreen().addElement(fb);
-                } else {
-                    explosionLimit[0] = false;
-                }
-            }
-
-            if (i == getPower())
-                expName = "explosion-R.png";
-            else
-                expName = "explosion-horizontal.png";
-            BombFire fb2 = new BombFire(expName);
-            if (explosionLimit[1] && fb2.setPosition(getPosition().getLine(), getPosition().getColumn() + i)) {
-                Position p = new Position(getPosition().getLine(), getPosition().getColumn() + i);
-                if (isExplosable(elements, p)) {
-                    explosionLimit[1] = Draw.getGameScreen().isValidPosition(fb2.getPosition());
-                    Draw.getGameScreen().addElement(fb2);
-                } else {
-                    explosionLimit[1] = false;
-                }
-            }
-
-            if (i == getPower())
-                expName = "explosion-U.png";
-            else
-                expName = "explosion-vertical.png";
-            BombFire fb3 = new BombFire(expName);
-            if (explosionLimit[2] && fb3.setPosition(getPosition().getLine() - i, getPosition().getColumn())) {
-                Position p = new Position(getPosition().getLine() - i, getPosition().getColumn());
-                if (isExplosable(elements, p)) {
-                    explosionLimit[2] = Draw.getGameScreen().isValidPosition(fb3.getPosition());
-                    Draw.getGameScreen().addElement(fb3);
-                } else {
-                    explosionLimit[2] = false;
-                }
-            }
-
-            if (i == getPower())
-                expName = "explosion-D.png";
-            else
-                expName = "explosion-vertical.png";
-            BombFire fb4 = new BombFire(expName);
-            if (explosionLimit[3] && fb4.setPosition(getPosition().getLine() + i, getPosition().getColumn())) {
-                Position p = new Position(getPosition().getLine() + i, getPosition().getColumn());
-                if (isExplosable(elements, p)) {
-                    explosionLimit[3] = Draw.getGameScreen().isValidPosition(fb4.getPosition());
-                    //explosionLimit[3] = !isBrick(elements,p);
-                    Draw.getGameScreen().addElement(fb4);
-                } else {
-                    explosionLimit[3] = false;
-                }
-            }
-        }
     }
 
     /**
@@ -177,6 +77,11 @@ public class Bomb extends Element implements Serializable{
         if(readyToExplode)
             countDown = Consts.TIMER_BOMB;
         this.readyToExplode = readyToExplode;
+    }
+
+    @Override
+    public String toString() {
+        return "Bomb";
     }
 
     public enum BOMBTYPE{

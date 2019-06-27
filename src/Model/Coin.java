@@ -14,6 +14,7 @@ public class Coin extends Monster {
         iTimer=0;
         distance=4;
         animateIddleState=1;
+        points=200;
         setDirection(randomDirection(Consts.DIRECTION.UP));
 
     }
@@ -43,13 +44,26 @@ public class Coin extends Monster {
 
 
     public void autoDraw() {
+        if(lifeState.equals(STATE.DYING)){
+            deadTime++;
+            if (deadTime > Consts.PERIOD/40) {
+                changeAppearance(getCharacterName()+"-death"+animateDeadState+".png");
+                Draw.draw(this.iImage, pPosition.getColumn(), pPosition.getLine());
+                animateDeadState++;
+                deadTime=0;
+            }
+        }
+        if(animateDeadState>7){
+            lifeState=STATE.DEAD;//will be removed on next frame
+            return;
+        }
         iTimer++;
         //change direction randomly
-        if (iTimer >= Consts.PERIOD/8) {
+        if (iTimer >= Consts.PERIOD/16) {
             iTimer = 0;
             int tries=0;
             boolean moved =false;
-            while (!moved && tries < 8) {
+            while (!moved && tries < 8 && lifeState.equals(STATE.ALIVE)) {
                 tries++;
                 if (getDirection().equals(Consts.DIRECTION.DOWN)) {
                     moved = this.moveDown();
@@ -70,12 +84,13 @@ public class Coin extends Monster {
             }
         }
 
-
-        if (iTimer > Consts.PERIOD/40) {
-            changeAppearance(getCharacterName()+animateIddleState+".png");
-            animateIddleState++;
-            if(animateIddleState==7)
-                animateIddleState=1;
+        if(lifeState.equals(STATE.ALIVE)) {
+            if (iTimer > Consts.PERIOD / 56) {
+                changeAppearance(getCharacterName() + animateIddleState + ".png");
+                animateIddleState++;
+                if (animateIddleState >= 6)
+                    animateIddleState = 1;
+            }
         }
 
         if (!Draw.isValidPosition(pPosition))

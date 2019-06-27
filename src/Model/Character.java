@@ -11,11 +11,11 @@ public class Character extends Element {
 
     private Consts.DIRECTION direction;
     private String characterName;
-    private int deadTime;
-    private STATE lifeState;
+    protected int deadTime;
+    protected STATE lifeState;
 
-    private int animateDeadState;
-    private int animateMoveState;
+    protected int animateDeadState;
+    protected int animateMoveState;
 
     private boolean invencible;
 
@@ -69,7 +69,8 @@ public class Character extends Element {
     }
 
     public void die() {
-        lifeState = STATE.DEAD;
+        lifeState = STATE.DYING;
+        bMortal=false;
     }
 
     public void switchAppearance() {
@@ -95,23 +96,20 @@ public class Character extends Element {
 
     @Override
     public void autoDraw() {
-        super.autoDraw();
-        if(lifeState.equals(STATE.DEAD)){
+        if(lifeState.equals(STATE.DYING)){
             deadTime++;
             if (deadTime > Consts.PERIOD/40) {
                 changeAppearance(characterName+"-death"+animateDeadState+".png");
                 animateDeadState++;
                 deadTime=0;
             }
-            if(animateDeadState>7){
-                animateDeadState=1;
-                lifeState=STATE.ALIVE;
-                changeAppearance(characterName+"-d2.png");//only bomberman should go back to life
-                setInvencible(false);
-                setPosition(0,0);
-
-            }
         }
+
+        if(animateDeadState>7){
+            lifeState=STATE.DEAD;//will be removed on next frame
+            return;
+        }
+        super.autoDraw();
     }
 
     @Override
@@ -156,7 +154,7 @@ public class Character extends Element {
     }
 
     public enum STATE{
-        DEAD,ALIVE
+        DEAD,ALIVE, DYING
     }
 }
 

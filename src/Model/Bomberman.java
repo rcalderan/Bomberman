@@ -7,7 +7,6 @@
 package Model;
 
 import Auxiliar.Draw;
-import Auxiliar.Position;
 
 import java.io.Serializable;
 
@@ -20,6 +19,7 @@ public class Bomberman extends Character implements Serializable{
     private int power;  //Bomb's fire range
     private int bombs;
     private Bomb.BOMBTYPE bombType;
+    private int points;
 
 
     public Bomberman(String sImageNamePNG) {
@@ -27,6 +27,7 @@ public class Bomberman extends Character implements Serializable{
         lives=3;
         power=1;
         bombs=1;
+        points=0;
         bombType = Bomb.BOMBTYPE.NORMAL;
     }
 
@@ -61,11 +62,17 @@ public class Bomberman extends Character implements Serializable{
         return bombType;
     }
 
+
+    public int getPoints(){ return points;}
+    public void setPoints(int points){
+        this.points = points;
+    }
+
     public void die(){
         if(!isInvencible()) {
             setInvencible(true);
             setLives(getLives() - 1);
-            setLifeState(STATE.ALIVE);
+            setLifeState(STATE.DYING);
             power = 1;
             bombs = 1;
             bombType = Bomb.BOMBTYPE.NORMAL;
@@ -85,6 +92,15 @@ public class Bomberman extends Character implements Serializable{
 
     public void autoDraw(){
         super.autoDraw();
+
+        if(animateDeadState>7){
+            animateDeadState=1;
+            lifeState=STATE.ALIVE;
+            changeAppearance(getCharacterName()+"-d2.png");//only bomberman should go back to life
+            setInvencible(false);
+            setPosition(0,0);
+
+        }
     }
 
     int oscilate=1;
@@ -122,5 +138,18 @@ public class Bomberman extends Character implements Serializable{
      */
     public void backToLastPosition(){
         this.pPosition.back();
+    }
+
+    public void updatePoints(Element eTemp) {
+        int aux=0;
+        if(eTemp.toString().equals("Monster")){
+            //Baloon
+            aux=100;
+        }else if(eTemp.toString().equals("Coin")){
+            aux = 200;
+        }else if(eTemp.toString().equals("Dino")){
+            aux = 300;
+        }
+        setPoints(getPoints()+aux);
     }
 }

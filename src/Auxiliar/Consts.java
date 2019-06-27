@@ -20,9 +20,6 @@ public class Consts {
     public static final String PATH = File.separator+"imgs"+File.separator;
     public static final int TIMER = 1;
 
-    //bomberman
-    public static final int INVENCIBILITY_TIME = 3;
-
     //itens
     public static final int TIMER_BOMB = 1760; //keep multiple of const PERIOD
     public static final int NORMALBOMB_PROBABILITY = 30;// spaw probability in percent

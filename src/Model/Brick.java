@@ -5,8 +5,8 @@ package Model;
  */
 
 public class Brick extends Element {
-    public Brick(String sNomeImagePNG) {
-        super(sNomeImagePNG);
+    public Brick() {
+        super("brick.png");
         this.bTransposable = false;
     }
 

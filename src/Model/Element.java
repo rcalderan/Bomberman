@@ -24,8 +24,14 @@ public abstract class Element implements Serializable {
 
     protected ImageIcon iImage;
     protected Position pPosition;
-    protected boolean bTransposable;
-    protected boolean bMortal;
+    protected boolean bTransposable; /*Pode passar por cima?*/
+    protected boolean bMortal;       /*Se encostar, o Bomberman morre?*/
+    private boolean bKill;        /*No proximo processamento, retirar da lista de elementos*/
+
+    public boolean isbKill() {
+        return bKill;
+    }
+
     public boolean isbMortal() {
         return bMortal;
     }
@@ -34,6 +40,7 @@ public abstract class Element implements Serializable {
         this.pPosition = new Position(1, 1);
         this.bTransposable = true;
         this.bMortal = false;
+        this.setbKill(false);
         try {
             iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + sImageNamePng);
             Image img = iImage.getImage();
@@ -59,6 +66,11 @@ public abstract class Element implements Serializable {
     public void setbTransposable(boolean bTransposable) {
         this.bTransposable = bTransposable;
     }
+
+    public void setbKill(boolean bKill) {
+        this.bKill = bKill;
+    }
+
     /**
      * Draw element on screen*/
     public void autoDraw(){
@@ -88,9 +100,7 @@ public abstract class Element implements Serializable {
     public boolean moveLeft() {
         return this.pPosition.moveLeft();
     }
-    public boolean interacts(Element aElement){
-        return false;
-    }
+    
 
     public void changeAppearance(String sNewAppearance){
         try {
