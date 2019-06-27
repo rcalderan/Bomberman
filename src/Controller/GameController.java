@@ -19,12 +19,17 @@ import java.util.Random;
 /**
  * @author Richard Calderan - 3672382
  * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
  *
+ *
+ * This class get and process all elements in "current" Stage.
  */
 public class GameController {
 
+    //stage that is processing
     private Stage currentStage;
 
+    //constructor
     public GameController(Stage currentStage){
         this.currentStage = currentStage;
     }
@@ -60,7 +65,7 @@ public class GameController {
     }
 
     /**
-     * Update changes on elements of screen
+     * Update "changes" on elements of screen
      * @return void
      */
     public void processEverything(){
@@ -74,31 +79,33 @@ public class GameController {
                 aux.add(currentStage.getElement(i));
 
             if (bBomberman.getLives() <= 0) {
-
-                Draw.getGameScreen().setGameMessange("GAME OVER!");
+                //Ends the game if bomberman lost all lives
+                Draw.getGameScreen().setGameMessange("You lose. GAME OVER!");
                 setGamePaused(true);
             } else {
+                // process all elements one by one
                 for (int i = 0; i < currentStage.getNumberOfElements(); i++) {
                     eTemp = currentStage.getElement(i);
                     if(eTemp.toString().equals("BombFire")){
-                        if (eTemp.isbKill()) {
+                        if (eTemp.isbKill()) {//remove explosion fire then its extinguished
                             currentStage.removeElement(eTemp);
-
                         }
                     }
-                    if (eTemp.isbKill()) {
+                    if (eTemp.isbKill()) {//remove all marcked elements.
                         currentStage.removeElement(eTemp);
                         
                     }
+                    //process a bomb that is in eminent explision
                     if(eTemp instanceof Bomb){
                         Bomb b =(Bomb)eTemp;
                         if(b.getReadyToExplode()) {
                             explode(b);
-                            drawEverything();
+                            drawEverything();//must draw it
                             return;
                         }
 
                     }
+                    //remove all character that its dead!
                     if (eTemp instanceof Character) {
                         Character ch = (Character)eTemp;
                         if(ch.getLifeState().equals(Character.STATE.DEAD)) {
@@ -106,12 +113,14 @@ public class GameController {
                         }
                     }
 
+                    //Compare with bomberman's position. It means that element is interacting with bomberman!
                     if (bBomberman.getPosition().equals(eTemp.getPosition())) {
                         if (eTemp.isbMortal()) {
                             bBomberman.die();
 
                         } else {
                             if (eTemp.isbTransposable()) {
+                                //Process an ITEM!
                                 if (eTemp.toString().equals("PowerUp")) {
                                     bBomberman.powerUp();
                                     currentStage.removeElement(eTemp);
@@ -124,8 +133,9 @@ public class GameController {
                                 } else if (eTemp.toString().equals("RemoteUp")) {
                                     bBomberman.setBombType(Bomb.BOMBTYPE.REMOTE);
                                     currentStage.removeElement(eTemp);
-                                } else if (eTemp.toString().equals("Door")) {
 
+                                } else if (eTemp.toString().equals("Door")) {
+                                    //PRocess the stage Door!
                                     if (currentStage.monsterCount() == 0) {
                                         if(currentStage.getNext() !=null){
                                             bBomberman.setPosition(0,0);
@@ -142,7 +152,7 @@ public class GameController {
                             }
                         }
                     }
-
+                    //must check all positions...
                     boolean randomElem = false;
                     for (int j = 0; j < currentStage.getNumberOfElements(); j++) {
                         Element eTemp2 = currentStage.getElement(j);
@@ -174,6 +184,7 @@ public class GameController {
 
                         }
                     }
+                    // genetate a random element with a certain probability
                     if (randomElem) {
                         Item rand = createRandomElement(eTemp.getPosition());
                         if (rand != null)
@@ -184,7 +195,10 @@ public class GameController {
         }while (aux.size()!=currentStage.getNumberOfElements());
     }
 
-
+    /**
+     * Explode a bomb
+     * @param bomb to be exploded!
+     */
     public void explode(Bomb bomb){
         /*explosionLimit is the flag that informs if the fire in each direction
         stops or keeps moving. Each index represents a direction
@@ -347,7 +361,7 @@ public class GameController {
     }
 
     /**
-     * for tests
+     * for tests. Kills all monsters in current stage! It will open the door!
      */
     public void killAllMonsters(){
         for (int i=0;i<getCurrentStage().getNumberOfElements();i++){

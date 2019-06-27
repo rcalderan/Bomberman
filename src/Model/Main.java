@@ -9,6 +9,9 @@ import Controller.Screen;
 /**
  * @author Richard Calderan - 3672382
  * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
+ *
+ * Main class. It calls main method and starts the game
  */
 public class Main {
 

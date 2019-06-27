@@ -15,6 +15,7 @@ import Model.Bomberman;
 /**
  * @author Richard Calderan - 3672382
  * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
  *
  */
 public class Draw implements Serializable {

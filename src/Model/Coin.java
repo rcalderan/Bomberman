@@ -4,6 +4,14 @@ import Auxiliar.Consts;
 import Auxiliar.Draw;
 import java.util.Random;
 
+/**
+ *
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
+ *
+ * Coin Monster. Represent a medium dificult mosnter
+ */
 public class Coin extends Monster {
     private int iTimer;
     private int distance;

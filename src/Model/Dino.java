@@ -3,7 +3,14 @@ package Model;
 import Auxiliar.Consts;
 import Auxiliar.Draw;
 
-
+/**
+ *
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
+ *
+ * Dino Monster
+ */
 public class Dino extends Monster {
     private int iTimer;
     public Dino() {

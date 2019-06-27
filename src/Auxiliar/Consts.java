@@ -10,6 +10,7 @@ import java.io.File;
 /**
  * @author Richard Calderan - 3672382
  * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
  *
  */ 
 public class Consts {
@@ -27,10 +28,6 @@ public class Consts {
     public static final int LIFEUP_PROBABILITY = 10;// spaw probability in percent
     public static final int POWERUP_PROBABILITY = 30;// spaw probability in percent
 
-    // number max per stage
-    public static final int MAX_POWERUP_STAGE = 4;
-    public static final int MAX_BOMB_STAGE = 4;
-    public static final int MAX_LIFEUP_STAGE = 1;
 
     public enum DIRECTION{
         UP,RIGHT,LEFT,DOWN;

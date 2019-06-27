@@ -12,6 +12,7 @@ import java.util.ArrayList;
 /**
  * @author Richard Calderan - 3672382
  * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
  *
  * Item for Bomberman's Power counter. It represents
  * Bomberman's Bomb fire range
@@ -21,17 +22,4 @@ public class PowerUp extends Item {
     public PowerUp(String sImageNamePNG) {
         super(sImageNamePNG);
     }
-/*
-    public void autoDraw(){
-        super.autoDraw();
-        ArrayList<Element> posElements= Draw.getGameScreen().getElements(pPosition);
-
-        if(posElements.size()>1){
-            for(Element el : posElements){
-                if(el instanceof BombFire){//break this brick
-                    Draw.getGameScreen().removeElement(this);
-                }
-            }
-        }
-    }*/
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 /**
  * @author Richard Calderan - 3672382
  * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
  *
  * Item for Bomberman's Lives counter. It represents the
  * number of lives Bomberman has

@@ -23,21 +23,20 @@ import java.util.logging.*;
 /**
  * @author Richard Calderan - 3672382
  * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
  *
+ * this class draws anything on screen!
  */
 public class Screen extends javax.swing.JFrame implements MouseListener, KeyListener {
 
     private String gameMessange;
     private Bomberman bBomberman;
-    //private ArrayList<Element> eElements;
     private GameController gameController;
     private Graphics graphics;
-    private ArrayList<Stage> gameStages;
     /**
      * Creates the game screen
      */
     public Screen() {
-        gameStages = new ArrayList<>();
         gameMessange = "Stage 1";
         //create Stages
         Stage stage1 = new Stage("Stage 1");
@@ -81,8 +80,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             Monster monster;
             do{//add for stage 1
                 monster = Stage.createRandomMonster();
-                int x = rand.nextInt(Consts.RES), y = rand.nextInt(Consts.RES);
-                Position aux = new Position(x, y);
+                int x , y;
                 x = rand.nextInt(Consts.RES);
                 y = rand.nextInt(Consts.RES);
                 monster.setPosition(x, y);
@@ -164,6 +162,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
     /*--------------------------------------------------*/
     /*------Não se preocupe com o código a seguir-------*/
     /*--------------------------------------------------*/
+    //Add an element to cyrrent stage
     public void addElement(Element aElement) {
         gameController.getCurrentStage().addElement(aElement);
     }
@@ -203,7 +202,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
             graphics.drawString("Authors: ", Consts.CELL_SIDE/2+15, Consts.CELL_SIDE * 6);
             graphics.drawString("Leticia Burla - 10294950", Consts.CELL_SIDE/2+15, Consts.CELL_SIDE * 7);
             graphics.drawString("Richard Calderan - 3672382", Consts.CELL_SIDE/2+15, Consts.CELL_SIDE * 8);
-            graphics.drawString("Henrique Ruher- 9999999", Consts.CELL_SIDE/2+15, Consts.CELL_SIDE * 9);
+            graphics.drawString("Henrique Ruher- 9292538", Consts.CELL_SIDE/2+15, Consts.CELL_SIDE * 9);
         }
         else
         /*Desenha cenário*/

@@ -4,7 +4,12 @@ import Auxiliar.Consts;
 import Auxiliar.Draw;
 
 /**
- * Represents a pea that can be shooted
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
+ *
+ * Represents a pea that can be shooted.
+ * Not implemented. Just for future use.
  */
 public class Pea extends Character {
     private int lifeTime;

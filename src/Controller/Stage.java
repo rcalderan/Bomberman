@@ -1,3 +1,5 @@
+
+
 package Controller;
 
 import Auxiliar.Consts;
@@ -12,6 +14,10 @@ import static Auxiliar.Draw.isValidPosition;
 
 /**
  * represents a game stage
+ *
+ * @author Richard Calderan - 3672382
+ * @author Leticia Burla - 10294950
+ * @author Henrique Ruher - 9292538
  */
 public class Stage {
 
@@ -94,6 +100,13 @@ public class Stage {
             int x,y;
             //check if there is something in its position
             ArrayList<Position> notHere = new ArrayList<>();
+
+            //dont place monsters close to bomberman!
+            notHere.add(new Position(0,0));
+            notHere.add(new Position(0,1));
+            notHere.add(new Position(0,2));
+            notHere.add(new Position(1,0));
+            notHere.add(new Position(2  ,0));
             for (Element e :elements)
                 notHere.add(e.getPosition());
             while (! isValidPosition(element.getPosition())|| notHere.contains(element.getPosition())) {
