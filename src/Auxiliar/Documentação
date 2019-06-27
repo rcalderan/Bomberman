@@ -1,6 +1,54 @@
 
 Documentação.
 
+How to Play:
+
+Keys:
+Arrow Key: Move Bomberman
+Space: Place Bomb
+P: Pause
+C: Explode bomb immediately, if REMOTE type. (See Itens->Ups->RemoteUp)
+K: Kills all monsters in current stage (for testing help)
+
+Objective:
+    Bombermen must pass for next 3 Stage Levels to win the game.
+    Kill all monsters and seek for the stage Door and enter. You ll be send to next level.
+    Bomberman must avoid all monsters and dont touch it.
+    Be carrefull with your explosions (explosions detonate any bomb)
+
+
+ITENS:
+    Ups
+        LifeUp: Grants 1 more life to Bombermam
+        BombUp: Grants the hability to place 1 more bomb at same time.
+        PowerUp: Make the explosion stronger.
+        RemoteUp: Change bomberman's type of bomb to Remote bomb.
+
+    Bombs:
+        What can a bomb do:
+            Bombs Kills every mosnters, bricks, itens and, of course, the hero.
+            Bombs also detonates bombs. So take care!!
+        There' re 2 types of bombs: Normal and Remote.
+            Normal Bombs explode some time before it was placed.
+            Remote bomb Explodes at Bomberman's Command! (press C)
+            Remote bomb is a RARE type of bomb. If you find it, then you are lucky! :)
+
+    Doors:
+        A dood is the way to win this game. You must find it!
+        A door will open only if all monsters on stage was killed. So good luck!
+
+
+
+
+MONSTERS:
+    Balloon: move slowly. Grants 100 points when killed.
+    Coin: move at medium speed. Grants 200 points when killed.
+    Dino: faster them all monsters. Grants 300 points when killed.
+
+
+
+EXCLUIR DAQUI PRA BAIXO DEPOIS QUE USAR (se usar)
+
 Registre aqui as auterações e mudanças
 (Este arquivo erá removido antes de entregar)
 

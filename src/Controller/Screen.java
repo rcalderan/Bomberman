@@ -194,10 +194,16 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         //prints PAUSED message
         if(gameController.getGamePause()) {
 
-            graphics.setColor(new Color(255,255,255));
-            graphics.setFont(new Font("Arial", Font.PLAIN, 50));
+            //graphics.setColor(new Color(255,255,255));
+            graphics.clearRect(Consts.CELL_SIDE/2,Consts.CELL_SIDE*4,Consts.CELL_SIDE*9,Consts.CELL_SIDE*6);
+            graphics.setFont(new Font("Arial", Font.PLAIN, 35));
             //backgroundName="black.png";
-            graphics.drawString(getGameMessange(), Consts.CELL_SIDE, Consts.CELL_SIDE * 5);
+            graphics.drawString(getGameMessange(), Consts.CELL_SIDE*2, Consts.CELL_SIDE * 5);
+
+            graphics.drawString("Authors: ", Consts.CELL_SIDE/2+15, Consts.CELL_SIDE * 6);
+            graphics.drawString("Leticia Burla - 10294950", Consts.CELL_SIDE/2+15, Consts.CELL_SIDE * 7);
+            graphics.drawString("Richard Calderan - 3672382", Consts.CELL_SIDE/2+15, Consts.CELL_SIDE * 8);
+            graphics.drawString("Henrique Ruher- 9999999", Consts.CELL_SIDE/2+15, Consts.CELL_SIDE * 9);
         }
         else
         /*Desenha cenário*/
@@ -282,22 +288,10 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         }
 
         else if (e.getKeyCode() == KeyEvent.VK_K) {
+            //FOR TESTING:
+            //Kills instantly all monsters in current stage
             gameController.killAllMonsters();
-        } else if (e.getKeyCode() == KeyEvent.VK_S) {
-            /*try {
-                File tanque = new File("c:\\temp\\POO.zip");
-                tanque.createNewFile();
-                FileOutputStream canoOut = new FileOutputStream(tanque);
-                GZIPOutputStream compactador = new GZIPOutputStream(canoOut);
-                ObjectOutputStream serializador = new ObjectOutputStream(compactador);
-                serializador.writeObject(this.eElements);
-                serializador.flush();
-                serializador.close();
-            } catch (IOException ex) {
-                Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
-            // check if game is paused. BomberMan couldnd move or place bomb if its paused.
-        } else if (e.getKeyCode() == KeyEvent.VK_UP && !gameState) {
+        }  else if (e.getKeyCode() == KeyEvent.VK_UP && !gameState) {
             bBomberman.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN && !gameState) {
             bBomberman.moveDown();
@@ -306,6 +300,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT && !gameState) {
             bBomberman.moveRight();
         }else if (e.getKeyCode() == KeyEvent.VK_SPACE && !gameState) {
+            //place a bomb
             if(couldPlaceBomb()){
                 Bomb b = new Bomb("bomba.png",getBomberman().getPower());
                 b.setType(bBomberman.getBombType());
@@ -325,15 +320,6 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
     }
 
     public void mousePressed(MouseEvent e) {
-        /* Clique do mouse desligado
-         int x = eElements.getX();
-         int y = eElements.getY();
-     
-         this.setTitle("X: "+ x + ", Y: " + y +
-         " -> Cell: " + (y/Consts.CELL_SIDE) + ", " + (x/Consts.CELL_SIDE));
-        
-         this.bBomberman.getPosition().setPosition(y/Consts.CELL_SIDE, x/Consts.CELL_SIDE);
-         */
         repaint();
     }
 
@@ -347,7 +333,7 @@ public class Screen extends javax.swing.JFrame implements MouseListener, KeyList
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("POO2015-1 - Adventures of lolo");
+        setTitle("POO2015-1 - Bomberman. By Richard, Leticia and Henrique");
         setAutoRequestFocus(false);
         setPreferredSize(new java.awt.Dimension(500, 500));
         setResizable(false);
