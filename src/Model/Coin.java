@@ -59,7 +59,7 @@ public class Coin extends Monster {
         }
         iTimer++;
         //change direction randomly
-        if (iTimer >= Consts.PERIOD/16) {
+        if (iTimer >= Consts.PERIOD/10) {
             iTimer = 0;
             int tries=0;
             boolean moved =false;

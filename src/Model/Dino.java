@@ -34,7 +34,7 @@ public class Dino extends Monster {
         double iRandDirection;
         iTimer++;
         //change direction randomly
-        if (iTimer > Consts.PERIOD/10 && getLifeState().equals(STATE.ALIVE)) {
+        if (iTimer > Consts.PERIOD/16 && getLifeState().equals(STATE.ALIVE)) {
             iTimer = 0;
             /*row a number between 0 e 1 and move it*/
             iRandDirection = Math.random();
